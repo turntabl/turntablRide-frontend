@@ -1,0 +1,17 @@
+#:kivy 2.1.0
+
+<Content>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: "90dp"
+
+    AnchorLayout:
+        MDSpinner:
+            size_hint: None, None
+            size: dp(30), dp(30)
+            pos_hint: {'center_x': .5, 'center_y': .5}
+    
+    AnchorLayout:
+        MDLabel:
+            text: "Logging in..."
+            halign: "center"
