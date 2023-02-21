@@ -1,4 +1,4 @@
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -9,16 +9,14 @@ Builder.load_file("kv_files/landing.kv")
 
 
 class WelcomeView(BoxLayout):
-
-    def go_to_login(self):
-        App.get_running_app().root.current = "login"
+    pass
 
 
 class DashBoardView(BoxLayout):
     pass
 
 
-class MyApp(App):
+class MyApp(MDApp):
     def build(self):
         Window.clearcolor = (1, 1, 1, 1)
         self.screen_manager = ScreenManager()
