@@ -4,7 +4,7 @@ from kivyauth.utils import stop_login
 from kivy.lang import Builder
 
 
-Builder.load_file("loading.kv")
+Builder.load_file("kv_files/loading.kv")
 
 class Loading(MDDialog):
 
