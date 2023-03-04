@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from loading import Loading
 from kivyauth.google_auth import login_google, initialize_google
 from kivymd.app import MDApp
+from google_oauth import start_login
 
 load_dotenv()
 
@@ -25,7 +26,13 @@ class Authentication:
         '''Method to call to start the login process.'''
 
         self.__loading.open()
-        login_google()
+        if start_login():
+            #call after login
+            return 
+        else:
+            # call error handler
+            self.error_listener()
+            return
 
     def after_login(self, name, email, photo_uri):
         '''
