@@ -1,13 +1,9 @@
-import os
+from config import get_google_config, client_google
 import socket
 import threading
 import webbrowser
-from oauthlib.oauth2 import WebApplicationClient
 
 from server import start_server
-import requests
-client_google = WebApplicationClient(os.getenv("GOOGLE_CLIENT_ID"))
-google_provider_cfg = requests.get("https://accounts.google.com/.well-known/openid-configuration").json()
 
 def start_login():
     print("start_login called")
@@ -37,16 +33,10 @@ def is_connected():
     return False
 
 def prepare_consent_page():
-    auth_endpoint = google_provider_cfg["authorization_endpoint"]
-    client_google.client_id = os.getenv("GOOGLE_CLIENT_ID")
+    auth_endpoint = get_google_config()["authorization_endpoint"]
     consent_page = client_google.prepare_request_uri(
         auth_endpoint,
-        redirect_uri="http://127.0.0.1:9004/loginGoogle/callbackGoogle",
+        redirect_uri="https://127.0.0.1:9004/loginGoogle/callbackGoogle",
         scope=["openid", "email", "profile"],
     )
     return consent_page
-
-
-# @server.route("/loginGoogle/callbackGoogle")
-# def callback():
-#     return "<h2>Return back to application to proceed</h2>"
