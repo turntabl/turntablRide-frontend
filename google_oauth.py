@@ -1,9 +1,13 @@
 from config import get_google_config, client_google
 import socket
-import threading
 import webbrowser
+import threading
+from queue import Queue
+from server import oauth_server, run_server
 
-from server import start_server
+q = Queue()
+
+token_server = oauth_server(q)
 
 def start_login():
     print("start_login called")
@@ -13,8 +17,9 @@ def start_login():
         #open browser 
         webbrowser.open(consent_page, 1, False)
         # start server in another thread/ process
-        thread = threading.Thread(target=start_server)
-        thread.start()
+        t = threading.Thread(target=run_server, args=(token_server,q))
+        t.start()
+        # name = input("enter your name")
         # wait for token
         return True
     else:
@@ -36,7 +41,7 @@ def prepare_consent_page():
     auth_endpoint = get_google_config()["authorization_endpoint"]
     consent_page = client_google.prepare_request_uri(
         auth_endpoint,
-        redirect_uri="https://127.0.0.1:9004/loginGoogle/callbackGoogle",
+        redirect_uri="https://127.0.0.1:9004/",
         scope=["openid", "email", "profile"],
     )
     return consent_page

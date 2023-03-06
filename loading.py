@@ -10,6 +10,6 @@ class Loading(MDDialog):
     '''This is a custom Dialog widget showing a spinner and a button'''
 
     def __init__(self, **kwargs):
-        cancel_btn = MDFlatButton(text="CANCEL", on_release=lambda *args: (stop_login(), self.dismiss()))
+        cancel_btn = MDFlatButton(text="CANCEL", on_release=lambda *args: (self.dismiss()))
         self.buttons = [cancel_btn]
         super().__init__(**kwargs)
