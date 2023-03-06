@@ -6,6 +6,7 @@ from config import get_google_config, client_google
 import threading
 from werkzeug import Request, Response
 from werkzeug.serving import make_server
+from kivy.clock import Clock
 
 
 def oauth_server(queue, after_login):
@@ -26,7 +27,8 @@ def oauth_server(queue, after_login):
 
         client_google.parse_request_body_response(json.dumps(token_response.json()))
         queue.put(client_google.access_token)
-        after_login("", "", "")
+        Clock.schedule_once(lambda *args: after_login("", "", ""), 0)
+        
         return Response("<h2>Return to the application to proceed</h2>", 200)
     
     return make_server("localhost", 9004, callback, ssl_context='adhoc')
