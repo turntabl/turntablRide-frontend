@@ -3,15 +3,12 @@ import os
 from flask import Flask
 import requests
 from config import get_google_config, client_google
-from multiprocessing import Process
 import threading
-from queue import Queue
-
 from werkzeug import Request, Response
 from werkzeug.serving import make_server
 
 
-def oauth_server(queue):
+def oauth_server(queue, after_login):
     @Request.application
     def callback(request):
         code = request.args.get("code")
@@ -29,6 +26,7 @@ def oauth_server(queue):
 
         client_google.parse_request_body_response(json.dumps(token_response.json()))
         queue.put(client_google.access_token)
+        after_login("", "", "")
         return Response("<h2>Return to the application to proceed</h2>", 200)
     
     return make_server("localhost", 9004, callback, ssl_context='adhoc')
@@ -43,15 +41,5 @@ def run_server(server, queue):
     t.join()
     return token
 
-
-server_process = Process(target=oauth_server)
-def start_oauth_server():
-    server_process.start()
-
-
-def stop_server(server):
-    if server_process.is_alive():
-        server_process.terminate()
-        server_process.join()
     
     

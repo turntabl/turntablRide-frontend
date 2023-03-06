@@ -2,8 +2,7 @@ from kivymd.uix.snackbar import Snackbar
 from kivy.clock import Clock
 from loading import Loading
 from kivymd.app import MDApp
-# from kivyauth.google_auth import login_google
-from google_oauth import start_login
+from google_oauth import GoogleOAuth
 
 class Authentication:
     '''
@@ -16,13 +15,13 @@ class Authentication:
 
     def __init__(self):
         # initialize_google(self.after_login, self.error_listener, os.environ["GOOGLE_CLIENT_ID"], os.environ["GOOGLE_CLIENT_SECRET"])
-        self.__loading = Loading()
+        self.__google_login = GoogleOAuth(self.after_login)
+        self.__loading = Loading(self.__google_login.stop_server)
 
     def login(self):
         '''Method to call to start the login process.'''
-
         self.__loading.open()
-        if start_login():
+        if self.__google_login.login():
             #call after login
             return 
         else:
