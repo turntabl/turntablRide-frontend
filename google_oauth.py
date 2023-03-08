@@ -7,17 +7,19 @@ from oauthlib.oauth2 import WebApplicationClient
 
 
 class GoogleOAuth:
-    def __init__(self, client_id, client_secret, success_listener):
-        self.web_client = WebApplicationClient(client_id)
-        self.__token_server = oauth_server(
-            self, success_listener, client_id, client_secret
-        )
+    def __init__(self, client_id, client_secret, success_listener, **kwargs):
+        self.succ_listener = success_listener
+        self.client_id = client_id
+        self.__client_secret = client_secret
+        self.web_client = WebApplicationClient(client_id, **kwargs)
 
     def login(self):
         print("start_login called")
         if self.is_connected():
             # prepare consent page
             consent_page = self.__prepare_consent_page()
+
+            self.__token_server = oauth_server(self, self.__client_secret)
 
             # start server in another thread/ process
             t = threading.Thread(target=run_server, args=(self.__token_server,))

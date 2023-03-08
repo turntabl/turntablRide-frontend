@@ -10,7 +10,7 @@ from queue import Queue
 queue = Queue()
 
 
-def oauth_server(goauth_client, after_login, client_id, client_secret):
+def oauth_server(goauth_client, client_secret):
     @Request.application
     def callback(request):
         code = request.args.get("code")
@@ -27,7 +27,7 @@ def oauth_server(goauth_client, after_login, client_id, client_secret):
             headers=headers,
             data=body,
             auth=(
-                client_id,
+                goauth_client.client_id,
                 client_secret,
             ),
         )
@@ -37,7 +37,7 @@ def oauth_server(goauth_client, after_login, client_id, client_secret):
         )
 
         queue.put(goauth_client.web_client.access_token)
-        Clock.schedule_once(lambda *args: after_login("", "", ""), 0)
+        Clock.schedule_once(lambda *args: goauth_client.succ_listener("", "", ""), 0)
         return Response("Return to the application to proceed", 200)
 
     return make_server("localhost", 9004, callback, ssl_context="adhoc")
