@@ -1,42 +1,37 @@
-from config import get_google_config, client_google
 import socket
+import requests
 import webbrowser
 import threading
-from queue import Queue
 from server import oauth_server, run_server
+from oauthlib.oauth2 import WebApplicationClient
 
 
 class GoogleOAuth:
-
-    def __init__(self, success_listener):
-        self.success_listener = success_listener
-        self.__queue = Queue()
-        self.__token_server = oauth_server(self.__queue, self.success_listener)
-# q = Queue()
-
-# token_server = oauth_server(q, after_login)
+    def __init__(self, client_id, client_secret, success_listener):
+        self.web_client = WebApplicationClient(client_id)
+        self.__token_server = oauth_server(
+            self, success_listener, client_id, client_secret
+        )
 
     def login(self):
         print("start_login called")
         if self.is_connected():
             # prepare consent page
-            consent_page = self.prepare_consent_page()
-            #open browser 
-            webbrowser.open(consent_page, 1, False)
+            consent_page = self.__prepare_consent_page()
+
             # start server in another thread/ process
-            t = threading.Thread(target=run_server, args=(self.__token_server, self.__queue))
+            t = threading.Thread(target=run_server, args=(self.__token_server,))
             t.start()
-            # wait for token
+            # open browser
+            webbrowser.open(consent_page, 1, False)
             return True
         else:
             print("cannot connect internet")
             return False
 
-
     def stop_server(self):
         self.__token_server.shutdown()
-
-
+        print("shutdown server")
 
     def is_connected(self):
         try:
@@ -46,11 +41,17 @@ class GoogleOAuth:
             pass
         return False
 
-    def prepare_consent_page(self):
-        auth_endpoint = get_google_config()["authorization_endpoint"]
-        consent_page = client_google.prepare_request_uri(
+    def __prepare_consent_page(self):
+        self.oauth_endpoints = self.__get_google_auth_endpoints()
+        auth_endpoint = self.oauth_endpoints["authorization_endpoint"]
+        consent_page = self.web_client.prepare_request_uri(
             auth_endpoint,
             redirect_uri="https://127.0.0.1:9004/",
-            scope=["openid", "email", "profile"],
+            scope=["email", "profile"],
         )
         return consent_page
+
+    def __get_google_auth_endpoints(self):
+        return requests.get(
+            "https://accounts.google.com/.well-known/openid-configuration"
+        ).json()
