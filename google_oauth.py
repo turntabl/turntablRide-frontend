@@ -14,7 +14,6 @@ class GoogleOAuth:
         self.web_client = WebApplicationClient(client_id, **kwargs)
 
     def login(self):
-        print("start_login called")
         if self.is_connected():
             # prepare consent page
             consent_page = self.__prepare_consent_page()
@@ -23,13 +22,14 @@ class GoogleOAuth:
 
             # start server in another thread/ process
             t = threading.Thread(target=run_server, args=(self.__token_server,))
+            t.daemon = True
             t.start()
             # open browser
             webbrowser.open(consent_page, 1, False)
             return True
-        else:
-            print("cannot connect internet")
-            return False
+
+        print("cannot connect internet")
+        return False
 
     def stop_server(self):
         self.__token_server.shutdown()

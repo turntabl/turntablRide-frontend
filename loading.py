@@ -2,6 +2,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from kivy.lang import Builder
 
+
 # used to load the kv file and make it available.
 Builder.load_file("kv_files/loading.kv")
 
@@ -13,7 +14,7 @@ class Loading(MDDialog):
         self.stop_server = stop_server
         cancel_btn = MDFlatButton(
             text="CANCEL",
-            on_release=lambda *args: (self.stop_server(), self.dismiss()),
+            on_press=lambda *args: (self.stop_server(), self.dismiss()),
         )
         self.buttons = [cancel_btn]
         super().__init__(**kwargs)

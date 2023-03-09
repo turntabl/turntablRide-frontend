@@ -36,8 +36,13 @@ def oauth_server(goauth_client, client_secret):
             json.dumps(token_response.json())
         )
 
-        queue.put(goauth_client.web_client.access_token)
-        Clock.schedule_once(lambda *args: goauth_client.succ_listener("", "", ""), 0)
+        queue.put(goauth_client.web_client.token["id_token"])
+        Clock.schedule_once(
+            lambda *args: goauth_client.succ_listener(
+                goauth_client.web_client.token["id_token"]
+            ),
+            0,
+        )
         return Response("Return to the application to proceed", 200)
 
     return make_server("localhost", 9004, callback, ssl_context="adhoc")
@@ -46,8 +51,10 @@ def oauth_server(goauth_client, client_secret):
 def run_server(server):
     t = threading.Thread(target=server.serve_forever)
     t.start()
-    print("server started")
     token = queue.get(block=True)
     server.shutdown()
     t.join()
     return token
+
+
+print(__name__)

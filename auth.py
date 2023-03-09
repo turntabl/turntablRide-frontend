@@ -32,22 +32,31 @@ class Authentication:
         if not self.__google_login.login():
             self.error_listener()
 
-    def after_login(self, name, email, photo_uri):
+    def after_login(self, token):
         """
         Is called after the login process is successful.
 
         Parameters
         ----------
-        name : str
-            The name of the user in Google
-        email : str
-            The google email of the user used to signin
-        photo_uri : str
-            A url to the google profile of the user
+        token : str
+            used to access resources on the backend not google resources
         """
+        root = MDApp.get_running_app().root
+        import requests
 
+        header = {"Authorization": "Bearer gf" + token}
+
+        resp = requests.get("http://localhost:8080/api/v1/demo", headers=header)
+        status_code = resp.status_code
         self.__loading.dismiss()
-        MDApp.get_running_app().root.current = "login"
+
+        if status_code == 200:
+            root.current = "dashboard"
+            root.get_screen("dashboard").ids.dashboard.ids.welcome_text.text = resp.text
+
+        elif status_code == 401:
+            Snackbar(text="You don't have access to this page").open()
+            root.current = "login"
 
     def error_listener(self):
         """Called whenever there is an error in the login process"""

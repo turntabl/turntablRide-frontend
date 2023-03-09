@@ -1,7 +1,13 @@
-#:kivy 1.11.0
+#:kivy 2.1.0
 #: import Authentication auth.Authentication
 
-<WelcomeView>:
+
+<OurScreenManager>:
+    LoginScreen:
+    DashboardScreen:
+
+
+<LoginView@BoxLayout>:
     orientation: "vertical"
     padding: [0, 0, 0, 100]
     Label:
@@ -27,11 +33,23 @@
             background_normal: ""
             on_press: Authentication().login()
 
-<DashBoardView>:
+<DashBoardView@BoxLayout>:
     orientation: "vertical"
     Label:
+        id: welcome_text
         text: "Welcome Back"
         color: 0, 0, 0
         bold: True
         size_hint: 0.3, 0.12
         pos_hint: {"x": 0.35}
+
+
+<DashboardScreen@Screen>:
+    name: "dashboard"
+    DashBoardView:
+        id: dashboard
+
+
+<LoginScreen@Screen>:
+    name: "login"
+    LoginView:
