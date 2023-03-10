@@ -3,6 +3,7 @@ import requests
 import webbrowser
 import threading
 from server import oauth_server, run_server
+import global_var as glob
 from oauthlib.oauth2 import WebApplicationClient
 
 
@@ -17,9 +18,7 @@ class GoogleOAuth:
         if self.is_connected():
             # prepare consent page
             consent_page = self.__prepare_consent_page()
-
             self.__token_server = oauth_server(self, self.__client_secret)
-
             # start server in another thread/ process
             t = threading.Thread(target=run_server, args=(self.__token_server,))
             t.daemon = True
@@ -27,12 +26,12 @@ class GoogleOAuth:
             # open browser
             webbrowser.open(consent_page, 1, False)
             return True
-
         print("cannot connect internet")
         return False
 
     def stop_server(self):
         self.__token_server.shutdown()
+        glob.stop_thread = True
         print("shutdown server")
 
     def is_connected(self):

@@ -46,16 +46,22 @@ class Authentication:
 
         header = {"Authorization": "Bearer " + token}
 
-        resp = requests.get("http://localhost:8080/api/v1/demo", headers=header)
-        status_code = resp.status_code
-        self.__loading.dismiss()
+        try:
+            resp = requests.get("http://localhost:8080/api/v1/demo", headers=header)
 
-        if status_code == 200:
-            root.current = "dashboard"
-            root.get_screen("dashboard").ids.dashboard.ids.welcome_text.text = resp.text
-
-        elif status_code == 401:
-            Snackbar(text="You don't have access to this page").open()
+            status_code = resp.status_code
+            self.__loading.dismiss()
+            if status_code == 200:
+                root.current = "dashboard"
+                root.get_screen(
+                    "dashboard"
+                ).ids.dashboard.ids.welcome_text.text = resp.text
+            elif status_code == 401:
+                Snackbar(text="You don't have access to this page").open()
+                root.current = "login"
+        except requests.exceptions.RequestException:
+            self.__loading.dismiss()
+            Snackbar(text="Server is down. Try agian later.").open()
             root.current = "login"
 
     def error_listener(self):

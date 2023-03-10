@@ -4,7 +4,8 @@ import threading
 from werkzeug import Request, Response
 from werkzeug.serving import make_server
 from kivy.clock import Clock
-from queue import Queue
+from queue import Empty, Queue
+import global_var as glob
 
 queue = Queue()
 
@@ -37,6 +38,7 @@ def oauth_server(goauth_client, client_secret):
             )
 
             queue.put('goauth_client.web_client.token["id_token"]')
+            glob.stop_thread = True
             Clock.schedule_once(
                 lambda *args: goauth_client.succ_listener(
                     goauth_client.web_client.token["id_token"]
@@ -52,8 +54,21 @@ def oauth_server(goauth_client, client_secret):
 def run_server(server):
     t = threading.Thread(target=server.serve_forever)
     t.start()
-    token = queue.get(block=True)
+    token = check_for_stop()
     print("shutdown from run_server function")
     server.shutdown()
     t.join()
     return token
+
+
+def check_for_stop():
+    if glob.stop_thread:
+        try:
+            return queue.get_nowait()
+        except Empty:
+            return None
+    try:
+        glob.stop_thread = True
+        return queue.get(timeout=100)
+    except Empty:
+        check_for_stop()
