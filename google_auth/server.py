@@ -83,6 +83,7 @@ def run_server(server):
     """
     t = threading.Thread(target=server.serve_forever)
     t.start()
+    glob.stop_thread = False
     token = check_for_stop()
     print("shutdown from run_server function")
     server.shutdown()

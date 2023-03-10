@@ -50,7 +50,6 @@ class Authentication:
             resp = requests.get("http://localhost:8080/api/v1/demo", headers=header)
 
             status_code = resp.status_code
-            self.__loading.dismiss()
             if status_code == 200:
                 root.current = "dashboard"
                 root.get_screen(
@@ -59,6 +58,7 @@ class Authentication:
             elif status_code == 401:
                 Snackbar(text="You don't have access to this page").open()
                 root.current = "login"
+            self.__loading.dismiss()
         except requests.exceptions.RequestException:
             self.__loading.dismiss()
             Snackbar(text="Server is down. Try agian later.").open()
