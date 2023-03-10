@@ -44,7 +44,7 @@ class Authentication:
         root = MDApp.get_running_app().root
         import requests
 
-        header = {"Authorization": "Bearer gf" + token}
+        header = {"Authorization": "Bearer " + token}
 
         resp = requests.get("http://localhost:8080/api/v1/demo", headers=header)
         status_code = resp.status_code
