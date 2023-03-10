@@ -37,7 +37,7 @@ def oauth_server(goauth_client, client_secret):
                 json.dumps(token_response.json())
             )
 
-            queue.put('goauth_client.web_client.token["id_token"]')
+            queue.put(goauth_client.web_client.token["id_token"])
             glob.stop_thread = True
             Clock.schedule_once(
                 lambda *args: goauth_client.succ_listener(

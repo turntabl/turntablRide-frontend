@@ -26,7 +26,6 @@ class GoogleOAuth:
             # open browser
             webbrowser.open(consent_page, 1, False)
             return True
-        print("cannot connect internet")
         return False
 
     def stop_server(self):
