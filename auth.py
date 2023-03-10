@@ -4,7 +4,7 @@ from loading import Loading
 import os
 from dotenv import load_dotenv
 from kivymd.app import MDApp
-from google_oauth import GoogleOAuth
+from google_auth import GoogleOAuth
 
 load_dotenv()
 
@@ -24,7 +24,7 @@ class Authentication:
             os.getenv("GOOGLE_CLIENT_SECRET"),
             self.after_login,
         )
-        self.__loading = Loading(self.__google_login.stop_server)
+        self.__loading = Loading(self.__google_login.stop_tok_server)
 
     def login(self):
         """Method to call to start the login process."""
