@@ -3,7 +3,7 @@ import requests
 import webbrowser
 import threading
 from google_auth.server import oauth_server, run_server
-import google_auth.global_var as glob
+from google_auth import global_var as glob
 from oauthlib.oauth2 import WebApplicationClient
 
 
@@ -16,7 +16,9 @@ class GoogleOAuth:
     Currently working for only web applications that require OAuth using Google.
     """
 
-    def __init__(self, client_id, client_secret, success_listener, **kwargs):
+    def __init__(
+        self, client_id, client_secret, success_listener, error_listener, **kwargs
+    ):
         """
         Creates an object of GoogleOAuth with parameters provided.
 
@@ -33,6 +35,7 @@ class GoogleOAuth:
             accept one parameter which is the token received.
         """
         self.succ_listener = success_listener
+        self.err_listener = error_listener
         self.client_id = client_id
         self.__client_secret = client_secret
         self.web_client = WebApplicationClient(client_id, **kwargs)
@@ -54,8 +57,8 @@ class GoogleOAuth:
             t.daemon = True
             t.start()
             webbrowser.open(consent_page, 1, False)
-            return True
-        return False
+        else:
+            self.err_listener("No internet Connection")
 
     def stop_tok_server(self):
         """
