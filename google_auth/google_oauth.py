@@ -1,5 +1,4 @@
 import socket
-import requests
 import webbrowser
 import threading
 from google_auth.server import oauth_server, run_server
@@ -38,6 +37,7 @@ class GoogleOAuth:
         self.err_listener = error_listener
         self.client_id = client_id
         self.__client_secret = client_secret
+        self.oauth_endpoints = glob.google_endpoints
         self.web_client = WebApplicationClient(client_id, **kwargs)
 
     def login(self):
@@ -84,24 +84,10 @@ class GoogleOAuth:
         consent_page : str
             A Url in a string format
         """
-        self.oauth_endpoints = self.__get_google_auth_endpoints()
-        auth_endpoint = self.oauth_endpoints["authorization_endpoint"]
+        auth_endpoint = self.oauth_endpoints["AUTHORIZATION_ENDPOINT"]
         consent_page = self.web_client.prepare_request_uri(
             auth_endpoint,
-            redirect_uri="https://127.0.0.1:9004/",
+            redirect_uri=glob.CALLBACK_URL,
             scope=["email", "profile"],
         )
         return consent_page
-
-    def __get_google_auth_endpoints(self):
-        """
-        Function to return the google endpoints needed for authorization
-        and authentication of the user.
-
-        Return
-        ------
-        A json encoded content.
-        """
-        return requests.get(
-            "https://accounts.google.com/.well-known/openid-configuration"
-        ).json()

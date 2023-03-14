@@ -1,13 +1,10 @@
 from kivymd.uix.snackbar import Snackbar
 from kivy.clock import Clock
 from loading import Loading
-import os
+import config
 import threading
-from dotenv import load_dotenv
 from kivymd.app import MDApp
 from google_auth import GoogleOAuth
-
-load_dotenv()
 
 
 class Authentication:
@@ -21,8 +18,8 @@ class Authentication:
 
     def __init__(self):
         self.__google_login = GoogleOAuth(
-            os.getenv("GOOGLE_CLIENT_ID"),
-            os.getenv("GOOGLE_CLIENT_SECRET"),
+            config.CLIENT_ID,
+            config.CLIENT_SECRET,
             self.after_login,
             self.error_listener,
         )
@@ -49,7 +46,7 @@ class Authentication:
         header = {"Authorization": "Bearer " + token}
 
         try:
-            resp = requests.get("http://localhost:8080/api/v1/demo", headers=header)
+            resp = requests.get(config.BACKEND_SERVER + "/api/v1/demo", headers=header)
             root = MDApp.get_running_app().root
             status_code = resp.status_code
             if status_code == 200:
@@ -57,7 +54,7 @@ class Authentication:
             elif status_code == 401:
                 Clock.schedule_once(
                     lambda *args: (
-                        Snackbar(text="You don't have access to this page").open(),
+                        Snackbar(text="You don't have access to this screen").open(),
                     ),
                     0,
                 )

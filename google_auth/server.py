@@ -29,11 +29,11 @@ def oauth_server(goauth_client, client_secret):
     def callback(request):
         code = request.args.get("code")
         if code:
-            token_endpoint = goauth_client.oauth_endpoints["token_endpoint"]
+            token_endpoint = goauth_client.oauth_endpoints["TOKEN_ENDPOINT"]
             token_url, headers, body = goauth_client.web_client.prepare_token_request(
                 token_endpoint,
                 authorization_response=request.url,
-                redirect_url="https://127.0.0.1:9004/",
+                redirect_url=glob.CALLBACK_URL,
                 code=code,
             )
 
@@ -73,7 +73,7 @@ def run_server(server):
     Return
     ------
     token : Any
-        A value putten into the queue by the server.
+        A value put into the queue by the server.
     """
     t = threading.Thread(target=server.serve_forever)
     t.start()
