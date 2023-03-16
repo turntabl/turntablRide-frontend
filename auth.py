@@ -17,19 +17,19 @@ class Authentication:
     """
 
     def __init__(self):
-        self.__google_login = GoogleOAuth(
+        self.google_login = GoogleOAuth(
             config.CLIENT_ID,
             config.CLIENT_SECRET,
             self.after_login,
             self.error_listener,
         )
-        self.login_thread = threading.Thread(target=self.__google_login.login)
+        self.login_thread = threading.Thread(target=self.google_login.login)
         self.login_thread.daemon = True
-        self.__loading = Loading(self.__google_login.stop_tok_server)
+        self.loading = Loading(self.google_login.stop_tok_server)
 
     def login(self):
         """Method to call to start the login process."""
-        self.__loading.open()
+        self.loading.open()
         self.login_thread.start()
 
     def after_login(self, token):
@@ -58,7 +58,7 @@ class Authentication:
                     ),
                     0,
                 )
-            Clock.schedule_once(lambda *args: (self.__loading.dismiss(),), 0)
+            Clock.schedule_once(lambda *args: (self.loading.dismiss(),), 0)
         except requests.exceptions.RequestException:
             self.error_listener("Backend server is down")
 
@@ -67,7 +67,7 @@ class Authentication:
 
         Clock.schedule_once(
             lambda *args: (
-                self.__loading.dismiss(),
+                self.loading.dismiss(),
                 Snackbar(text=msg).open(),
             ),
             0,

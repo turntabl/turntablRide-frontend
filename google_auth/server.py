@@ -4,7 +4,7 @@ import threading
 from werkzeug import Request, Response
 from werkzeug.serving import make_server
 from queue import Empty, Queue
-import google_auth.global_var as glob
+import google_auth.globals as glob
 
 queue = Queue()
 
