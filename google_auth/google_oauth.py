@@ -1,9 +1,8 @@
 import socket
-import requests
 import webbrowser
 import threading
 from google_auth.server import oauth_server, run_server
-import google_auth.global_var as glob
+from google_auth import globals as glob
 from oauthlib.oauth2 import WebApplicationClient
 
 
@@ -16,7 +15,9 @@ class GoogleOAuth:
     Currently working for only web applications that require OAuth using Google.
     """
 
-    def __init__(self, client_id, client_secret, success_listener, **kwargs):
+    def __init__(
+        self, client_id, client_secret, success_listener, error_listener, **kwargs
+    ):
         """
         Creates an object of GoogleOAuth with parameters provided.
 
@@ -33,8 +34,10 @@ class GoogleOAuth:
             accept one parameter which is the token received.
         """
         self.succ_listener = success_listener
+        self.err_listener = error_listener
         self.client_id = client_id
         self.__client_secret = client_secret
+        self.oauth_endpoints = glob.google_endpoints
         self.web_client = WebApplicationClient(client_id, **kwargs)
 
     def login(self):
@@ -54,8 +57,8 @@ class GoogleOAuth:
             t.daemon = True
             t.start()
             webbrowser.open(consent_page, 1, False)
-            return True
-        return False
+        else:
+            self.err_listener("No internet Connection")
 
     def stop_tok_server(self):
         """
@@ -81,24 +84,10 @@ class GoogleOAuth:
         consent_page : str
             A Url in a string format
         """
-        self.oauth_endpoints = self.__get_google_auth_endpoints()
-        auth_endpoint = self.oauth_endpoints["authorization_endpoint"]
+        auth_endpoint = self.oauth_endpoints["AUTHORIZATION_ENDPOINT"]
         consent_page = self.web_client.prepare_request_uri(
             auth_endpoint,
-            redirect_uri="https://127.0.0.1:9004/",
+            redirect_uri=glob.CALLBACK_URL,
             scope=["email", "profile"],
         )
         return consent_page
-
-    def __get_google_auth_endpoints(self):
-        """
-        Function to return the google endpoints needed for authorization
-        and authentication of the user.
-
-        Return
-        ------
-        A json encoded content.
-        """
-        return requests.get(
-            "https://accounts.google.com/.well-known/openid-configuration"
-        ).json()
