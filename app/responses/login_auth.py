@@ -1,10 +1,12 @@
-from kivymd.uix.snackbar import Snackbar
 from kivy.clock import Clock
-from loading import Loading
+
+from app.commons.toast import Toaster
+from app.utils.colors import Colors
+from app.commons.loader import Loading
 import os
 from dotenv import load_dotenv
 from kivymd.app import MDApp
-from google_auth import GoogleOAuth
+from app.google_auth import GoogleOAuth
 
 load_dotenv()
 
@@ -52,20 +54,29 @@ class Authentication:
             status_code = resp.status_code
             self.__loading.dismiss()
             if status_code == 200:
-                root.current = "dashboard"
+                root.current = "_destination_screen"
                 root.get_screen(
-                    "dashboard"
+                    "_destination_screen"
                 ).ids.dashboard.ids.welcome_text.text = resp.text
             elif status_code == 401:
-                Snackbar(text="You don't have access to this page").open()
-                root.current = "login"
+                Toaster(message="You don't have access to this page",
+                        bg_color=Colors().ErrorColor.get("BackgroundColor"), font_size=14).toast()
+                root.current = "_login_screen"
         except requests.exceptions.RequestException:
             self.__loading.dismiss()
-            Snackbar(text="Server is down. Try agian later.").open()
-            root.current = "login"
+            Toaster(message="Server is down. Try again later.", bg_color=Colors().ErrorColor.get("BackgroundColor"),
+                    font_size=14).toast()
+
+            root.current = "_login_screen"
 
     def error_listener(self):
         """Called whenever there is an error in the login process"""
 
-        Snackbar(text="Error logging in. Check connection or try again.").open()
+        Toaster(message="Error logging in. Check connection or try again.",
+                bg_color=Colors().ErrorColor.get("BackgroundColor"), font_size=14).toast()
         Clock.schedule_once(lambda *args: self.__loading.dismiss())
+
+    def login_and_register_user(self):
+        """Custom login response to hold user return responses"""
+        return Authentication().login()
+        # return {"status": "success", "message": response }

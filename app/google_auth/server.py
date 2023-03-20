@@ -5,7 +5,7 @@ from werkzeug import Request, Response
 from werkzeug.serving import make_server
 from kivy.clock import Clock
 from queue import Empty, Queue
-import google_auth.global_var as glob
+from app import google_auth as glob
 
 queue = Queue()
 
