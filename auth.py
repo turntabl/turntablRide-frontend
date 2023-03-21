@@ -2,12 +2,12 @@ from kivymd.uix.snackbar import Snackbar
 from kivy.clock import Clock
 from loading import Loading
 import config
-import threading
 from kivymd.app import MDApp
 from google_auth import GoogleOAuth
+from kivy.uix.boxlayout import BoxLayout
 
 
-class Authentication:
+class LoginView(BoxLayout):
     """
     This class provides authentication functionality using Google Oauth2.
 
@@ -16,21 +16,20 @@ class Authentication:
     This class only works with Desktop applications
     """
 
-    def __init__(self):
-        self.google_login = GoogleOAuth(
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.google_auth = GoogleOAuth(
             config.CLIENT_ID,
             config.CLIENT_SECRET,
             self.after_login,
             self.error_listener,
         )
-        self.login_thread = threading.Thread(target=self.google_login.login)
-        self.login_thread.daemon = True
-        self.loading = Loading(self.google_login.stop_tok_server)
+        self.loading = Loading()
 
     def login(self):
         """Method to call to start the login process."""
         self.loading.open()
-        self.login_thread.start()
+        self.google_auth.login()
 
     def after_login(self, token):
         """
@@ -46,7 +45,9 @@ class Authentication:
         header = {"Authorization": "Bearer " + token}
 
         try:
-            resp = requests.get(config.BACKEND_SERVER + "/api/v1/demo", headers=header)
+            resp = requests.get(
+                config.BACKEND_SERVER + "/api/v1/demo", headers=header, timeout=2
+            )
             root = MDApp.get_running_app().root
             status_code = resp.status_code
             if status_code == 200:

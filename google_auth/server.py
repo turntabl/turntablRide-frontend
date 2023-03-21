@@ -1,15 +1,15 @@
 import json
-import requests
 import threading
+import requests
 from werkzeug import Request, Response
 from werkzeug.serving import make_server
-from queue import Empty, Queue
+from queue import Queue
 import google_auth.globals as glob
 
-queue = Queue()
+token_queue = Queue()
 
 
-def oauth_server(goauth_client, client_secret):
+def get_oauth_server(goauth_client, client_secret):
     """
     Defines a server with a simple handler.
 
@@ -29,9 +29,8 @@ def oauth_server(goauth_client, client_secret):
     def callback(request):
         code = request.args.get("code")
         if code:
-            token_endpoint = goauth_client.oauth_endpoints["TOKEN_ENDPOINT"]
             token_url, headers, body = goauth_client.web_client.prepare_token_request(
-                token_endpoint,
+                glob.google_endpoints["TOKEN_ENDPOINT"],
                 authorization_response=request.url,
                 redirect_url=glob.CALLBACK_URL,
                 code=code,
@@ -51,59 +50,21 @@ def oauth_server(goauth_client, client_secret):
                 json.dumps(token_response.json())
             )
 
-            queue.put(goauth_client.web_client.token["id_token"])
-            glob.stop_thread = True
+            token_queue.put(goauth_client.web_client.token["id_token"])
             goauth_client.succ_listener(goauth_client.web_client.token["id_token"])
             return Response("Return to the application to proceed", 200)
         return Response("Invalid Parameters.", 401)
 
-    return make_server("localhost", 9004, callback, ssl_context="adhoc")
+    return make_server(glob.HOST, glob.PORT, callback, ssl_context="adhoc")
 
 
-def run_server(server):
-    """
-    Runs the server and shutdowns upon receiving a value in
-    the queue or when triggered.
-
-    Parameters
-    ----------
-    server : BaseWSGIServer
-        A BaseWSGIServer instance
-
-    Return
-    ------
-    token : Any
-        A value put into the queue by the server.
-    """
-    t = threading.Thread(target=server.serve_forever)
-    t.start()
-    glob.stop_thread = False
-    token = check_for_stop()
-    print("shutdown from run_server function")
-    server.shutdown()
-    t.join()
-    return token
+def wait_for_token():
+    return token_queue.get()
 
 
-def check_for_stop():
-    """
-    Checks for the stop_thread and returns if set else continues to
-    wait for value to be put in queue.
-    If value is put in queue, then it returns.
+def trigger_server_stop():
+    token_queue.put(None)
 
-    Return
-    ------
-    token : Any
-        Can be a any value or None.
-        None if no value is in queue and stop_thread is set to true.
-    """
-    if glob.stop_thread:
-        try:
-            return queue.get_nowait()
-        except Empty:
-            return None
-    try:
-        glob.stop_thread = True
-        return queue.get(timeout=100)
-    except Empty:
-        check_for_stop()
+
+def serve_server(server):
+    threading.Thread(target=server.serve_forever, daemon=True).start()

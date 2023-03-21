@@ -1,5 +1,4 @@
 #:kivy 2.1.0
-#: import Authentication auth.Authentication
 
 
 <OurScreenManager>:
@@ -7,7 +6,7 @@
     DashboardScreen:
 
 
-<LoginView@BoxLayout>:
+<LoginView>:
     orientation: "vertical"
     padding: [0, 0, 0, 100]
     Label:
@@ -31,7 +30,7 @@
             font_size: 18
             background_color: 0.234, 0.59, 0.965, 1
             background_normal: ""
-            on_press: Authentication().login()
+            on_press: root.login()
 
 <DashBoardView@BoxLayout>:
     orientation: "vertical"
