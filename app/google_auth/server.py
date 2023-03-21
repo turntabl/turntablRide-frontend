@@ -3,9 +3,8 @@ import requests
 import threading
 from werkzeug import Request, Response
 from werkzeug.serving import make_server
-from kivy.clock import Clock
 from queue import Empty, Queue
-from app import google_auth as glob
+import app.google_auth.globals as glob
 
 queue = Queue()
 
@@ -30,11 +29,11 @@ def oauth_server(goauth_client, client_secret):
     def callback(request):
         code = request.args.get("code")
         if code:
-            token_endpoint = goauth_client.oauth_endpoints["token_endpoint"]
+            token_endpoint = goauth_client.oauth_endpoints["TOKEN_ENDPOINT"]
             token_url, headers, body = goauth_client.web_client.prepare_token_request(
                 token_endpoint,
                 authorization_response=request.url,
-                redirect_url="https://127.0.0.1:9004/",
+                redirect_url=glob.CALLBACK_URL,
                 code=code,
             )
 
@@ -54,12 +53,7 @@ def oauth_server(goauth_client, client_secret):
 
             queue.put(goauth_client.web_client.token["id_token"])
             glob.stop_thread = True
-            Clock.schedule_once(
-                lambda *args: goauth_client.succ_listener(
-                    goauth_client.web_client.token["id_token"]
-                ),
-                0,
-            )
+            goauth_client.succ_listener(goauth_client.web_client.token["id_token"])
             return Response("Return to the application to proceed", 200)
         return Response("Invalid Parameters.", 401)
 
@@ -79,10 +73,11 @@ def run_server(server):
     Return
     ------
     token : Any
-        A value putten into the queue by the server.
+        A value put into the queue by the server.
     """
     t = threading.Thread(target=server.serve_forever)
     t.start()
+    glob.stop_thread = False
     token = check_for_stop()
     print("shutdown from run_server function")
     server.shutdown()
