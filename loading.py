@@ -4,7 +4,7 @@ from kivy.lang import Builder
 
 
 # used to load the kv file and make it available.
-Builder.load_file("kiv/commons/loader.kv")
+Builder.load_file("kv_files/loading.kv")
 
 
 class Loading(MDDialog):

@@ -1,12 +1,9 @@
 import socket
 import webbrowser
 import threading
-# from google_auth.server import oauth_server, run_server
-from app.google_auth import globals as glob
+from google_auth.server import oauth_server, run_server
+from google_auth import globals as glob
 from oauthlib.oauth2 import WebApplicationClient
-
-from app.google_auth.server import oauth_server, run_server
-
 
 
 class GoogleOAuth:
