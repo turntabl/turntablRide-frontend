@@ -1,8 +1,8 @@
 import threading
 import webbrowser
-from google_auth.server import get_oauth_server, wait_for_token, serve_server
-from google_auth import globals as glob
-from google_auth.utils import is_connected
+from app.google_auth.server import get_oauth_server, wait_for_token, serve_server
+from app.google_auth import globals as glob
+from app.google_auth.utils import is_connected
 from oauthlib.oauth2 import WebApplicationClient
 
 

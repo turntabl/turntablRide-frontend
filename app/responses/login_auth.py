@@ -1,13 +1,13 @@
-from kivymd.uix.snackbar import Snackbar
 from kivy.clock import Clock
-from loading import Loading
-import config
+from app.commons.toast import Toaster
+from app.utils.colors import Colors
+from app.commons.loader import Loading
+import config.config as config
 from kivymd.app import MDApp
-from google_auth import GoogleOAuth
-from kivy.uix.boxlayout import BoxLayout
+from app.google_auth import GoogleOAuth
 
 
-class LoginView(BoxLayout):
+class Authentication:
     """
     This class provides authentication functionality using Google Oauth2.
 
@@ -16,8 +16,7 @@ class LoginView(BoxLayout):
     This class only works with Desktop applications
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self):
         self.google_auth = GoogleOAuth(
             config.CLIENT_ID,
             config.CLIENT_SECRET,
@@ -45,9 +44,7 @@ class LoginView(BoxLayout):
         header = {"Authorization": "Bearer " + token}
 
         try:
-            resp = requests.get(
-                config.BACKEND_SERVER + "/api/v1/demo", headers=header, timeout=2
-            )
+            resp = requests.get(config.BACKEND_SERVER + "/api/v1/demo", headers=header)
             root = MDApp.get_running_app().root
             status_code = resp.status_code
             if status_code == 200:
@@ -55,7 +52,11 @@ class LoginView(BoxLayout):
             elif status_code == 401:
                 Clock.schedule_once(
                     lambda *args: (
-                        Snackbar(text="You don't have access to this screen").open(),
+                        Toaster(
+                            message="You don't have access to this screen",
+                            bg_color=Colors().ErrorColor.get("BackgroundColor"),
+                            font_size=14,
+                        ).toast(),
                     ),
                     0,
                 )
@@ -69,10 +70,18 @@ class LoginView(BoxLayout):
         Clock.schedule_once(
             lambda *args: (
                 self.loading.dismiss(),
-                Snackbar(text=msg).open(),
+                Toaster(
+                    message=msg,
+                    bg_color=Colors().ErrorColor.get("BackgroundColor"),
+                    font_size=14,
+                ).toast(),
             ),
             0,
         )
+
+    def login_and_register_user(self):
+        """Custom login response to hold user return responses"""
+        return Authentication().login()
 
 
 def change_screen(root, resp):
