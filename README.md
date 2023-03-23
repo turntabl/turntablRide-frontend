@@ -17,7 +17,7 @@ The frontend consist mainly UI components of the application. Widget building an
 
 ## Security
 
- To be updated later
+    To be updated later
 
 ## Background
 
@@ -48,7 +48,7 @@ turntablRide:.
 ```
 
 ## Install
- Would update
+    Would update
 
 
 ## Usage
@@ -57,12 +57,13 @@ turntablRide:.
 
 ## API
 
-Would update
-
+    Would update
 
 ### Contributors
 
- Would update
+    Would update
 
 ## License
- Would update
+
+    Would update
+
