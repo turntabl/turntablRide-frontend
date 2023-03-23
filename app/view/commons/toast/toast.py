@@ -7,27 +7,33 @@ from app.utils.colors import Colors
 
 
 class Toaster(object):
-    """ Customized snackbar as app Toaster. This Toaster has been created to handle all customized user errors.
+    """ Customized snackbar as app Toaster, extending from BaseSnackbar . This Toaster has been created to handle all customized user errors.
     The Toaster comes with two functionalities.
 
-    1. A simple Toaster with message
-    To use, just import it into your class and use. You may not need to instantiate.
-    for example:
-        Toaster(message="Message to display on Toster", bg_color= self.colors.ErrorColor.get("BackgroundErrorColor"), font_size=14).toast()
-    Note: You must call .toast() on Toaster in other to display it.
-    i.e:
-        Toaster(...).toast()
-    just like above
+    1. 
+        A simple Toaster with message
+        To use this toast, just import it into your class and use. You may not need to instantiate.
+        for example:
 
-    2. A simple Toaster with message and buttons.
-    To use, just import it into your class and use. You may not need to instantiate.
-    for example:
-        Toaster(message="Message to display on Toster", bg_color=self.colors.ErrorColor.get("BackgroundErrorColor"), font_size=14).toast_with_buttons(2,["Cancel", "ok"], ["#F44336", "#F44336"],[lambda *args: 2,lambda *args: 4])
-    Note: You must call .toast_with_buttons() on Toaster in other to display and use the buttons.
-    i.e:
-        Toaster(...).toast_with_buttons(...)
+            `` Toaster(message="Message to display on Toster", bg_color= self.colors.ErrorColor.get("BackgroundErrorColor"), font_size=14).toast() ``
+        
+        Note: You must call .toast() on Toaster in other to display it.
+        i.e:
+            Toaster(...).toast()
+        just like above example
 
+    2. 
+        A simple Toaster with message and buttons.
+        To use, just import it into your class and use. You may not need to instantiate.
+        for example:
 
+            `` Toaster(message="Message to display on Toster", bg_color=self.colors.ErrorColor.get("BackgroundErrorColor"), font_size=14).toast_with_buttons(2,["Cancel", "ok"], ["#F44336", "#F44336"],[lambda *args: 2,lambda *args: 4]) ``
+        
+        Note: You must call .toast_with_buttons() on Toaster in other to display and use the buttons.
+        i.e:
+            Toaster(...).toast_with_buttons(...)
+
+        TODO: Fix misalignment of button in toast
     """
     def __init__(self,
                  message: str = "Pass your own message here",

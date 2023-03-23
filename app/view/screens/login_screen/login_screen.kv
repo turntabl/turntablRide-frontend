@@ -1,5 +1,4 @@
-#:kivy 2.1.0
-<LoginScreenContent>:
+<LoginScreen>:
     md_bg_color: app.COLORS.WhiteColor.get("BackgroundColor")
     BoxLayout:
         orientation: "vertical"
@@ -19,7 +18,7 @@
             font: "fn_italic"
 
         Image:
-            source: "images/landing_big.png"
+            source: "assets/images/landing_big.png"
             size_hint_y: 0.6
             border: app.COLORS.WhiteColor.get("BackgroundColor")
             background_normal: app.COLORS.WhiteColor.get("BackgroundColor")
@@ -27,13 +26,10 @@
         MDFillRoundFlatIconButton:
             id: login_with_google_btn
             text: "  Login with Google"
-            icon: "images/google_icon.png"
-            icon_color: "orange"
-            radius: [20, 20, 20, 20]
+            icon: "assets/images/google_icon.png"
             md_bg_color: app.COLORS.BlueColor.get("BackgroundColor")
-            line_color: app.COLORS.BlueColor.get("TextColor")
+            line_color: 0, 0, 0, 0
             text_color: app.COLORS.WhiteColor.get("BackgroundColor")
-            on_press: root.login_with_google()
-            size: dp(295), dp(48)
+            on_press: root.controller.verify_user()
+            size: dp(295), dp(0)
             pos_hint: {"center_x": 0.5}
-            font: app.Fonts.fonts.get("jakarta_normal")

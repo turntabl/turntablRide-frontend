@@ -1,12 +1,9 @@
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
-from kivy.lang import Builder
+
 
 # used to load the kv file and make it available.
-Builder.load_file("kiv/commons/loader.kv")
-
-
-class Loading(MDDialog):
+class Loader(MDDialog):
     """This is a custom Dialog widget showing a spinner and a button"""
 
     def __init__(self, func=None, **kwargs):

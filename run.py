@@ -1,36 +1,16 @@
 from kivy.core.window import Window
 from kivymd.app import MDApp
-from kivymd.uix.screen import MDScreen
 from kivymd.uix.screenmanager import MDScreenManager
 from app.utils.colors import Colors
 from app.utils.fonts import Fonts
-
-""" The run.py would contain all the screens of the application as well as
-    the Screen Manager.
-    All new developed screens must be included here. As shown below (LoginScreen class)
-    is included as a screen
-    which would be managed by the WindowManager class.
-    The contents and stylying of the screens goes into app/screens/
-    and kiv/screens/ respectively
-"""
-
-
-class LoginScreen(MDScreen):
-    """Holds the login screen of the app
-
-
-    :param MDScreen: A a component of MDScreenManager
-    :type MDScreen: ~kivymd.uix.screenmanager.MDScreenManager
-    """
-
-    pass
+from config.config import PREFERRED_WINDOW_SIZE
 
 
 class WindowManager(MDScreenManager):
-    """Manages and switches the applications to different screens
+    """Manages and switches the applications to different screens.
+    Actual implementation is found in the ` run.kv ` file
 
-    :param MDScreenManager: Screen manager. This is the main class that will control
-    your ~kivymd.uix.screen.MDScreen stack and memory
+    :param MDScreenManager: Screen manager. This is the main class that will control your ~kivymd.uix.screen.MDScreen stack and memory
     :type MDScreenManager: ~kivymd.uix.screenmanager.MDScreenManager
     """
 
@@ -42,9 +22,10 @@ class Run(MDApp):
         super().__init__()
         self.COLORS = Colors()
         self.Fonts = Fonts()
+        self.load_all_kv_files(self.directory)
+        Window.size = PREFERRED_WINDOW_SIZE
 
-    def on_start(self):
-        Window.size = (360, 640)
+    def on_start(self) -> None:
         self.theme_cls.theme_style = "Light"
 
 

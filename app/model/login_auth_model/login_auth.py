@@ -1,10 +1,10 @@
 from kivy.clock import Clock
-from app.commons.toast import Toaster
+from app.view.commons.toast.toast import Toaster
 from app.utils.colors import Colors
-from app.commons.loader import Loading
+from app.view.commons.loader.loader import Loader
 import config.config as config
 from kivymd.app import MDApp
-from app.google_auth import GoogleOAuth, trigger_server_stop
+from app.lib.google_auth import GoogleOAuth, trigger_server_stop
 
 
 class Authentication:
@@ -23,7 +23,7 @@ class Authentication:
             self.after_login,
             self.error_listener,
         )
-        self.loading = Loading(func=trigger_server_stop)
+        self.loading = Loader(func=trigger_server_stop)
 
     def login(self):
         """Method to call to start the login process."""
