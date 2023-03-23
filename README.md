@@ -17,7 +17,7 @@ The frontend consist mainly UI components of the application. Widget building an
 
 ## Security
 
-### To be updated later
+    To be updated later
 
 ## Background
 
@@ -29,6 +29,7 @@ This application a mobile version.
 ### Project Directory
 Refere to the README inside each path
 
+```
 turntablRide:.
     ├───app
     │   ├───controller 
@@ -44,23 +45,25 @@ turntablRide:.
     ├───config
     ├───docs
     ├───test
+```
 
 ## Install
-### Would update
+    Would update
 
 
 ## Usage
 
-### Would update
+    Would update
 
 ## API
 
-### Would update
+    Would update
 
 ### Contributors
 
-### Would update
+    Would update
 
 ## License
 
+    Would update
 
