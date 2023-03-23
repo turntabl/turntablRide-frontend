@@ -64,3 +64,43 @@ turntablRide:.
 ## License
 
 
+### Description
+
+Restructuring the project directory to enable individual contributions without much pull and push merge conflicts.
+This is necessary as new members are been added to the project which would require individuals working on smaller features.
+It would allows smaller and reusable UI components that can be easily used in the entire application.
+This would also enable components inheritance and would tries to minimize feature dependency as possible.
+
+
+## Type of change
+
+- [x] Restructuring of project directory
+
+# How Has This Been Tested?
+
+There would not be a need for testing as it just a directory restructuring. Just a pull from the dev and restructuring of files into directories.
+
+- [x] Dev codes are running as earlier
+
+# Checklist:
+
+- [x] I have performed a self-review of the restructuring with some of the team members 
+- [x] I have added documents and comments to the each directory
+- [x] A tree structure of the app is shown below.
+
+
+turntablRide:.
+    ├───app
+    │   ├───controller 
+    │   ├───lib
+    │   ├───model
+    │   ├───utils
+    │   ├───view
+    │   │   ├───commons
+    │   │   └───screens
+    ├───assets
+    │   ├───fonts
+    │   └───images
+    ├───config
+    ├───docs
+    ├───test
