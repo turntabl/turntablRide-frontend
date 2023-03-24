@@ -1,8 +1,3 @@
-#:include app/view/commons/map_view/map_view.kv
-#:include app/view/commons/bottom_widget/bottom_widget.kv
-#:include app/view/commons/rectangle_flat_button/main_blue_button.kv
-#:include app/view/commons/top_navigator/top_nav_button.kv
-
 <DestinationScreen>:
     destination: destination
 
@@ -25,7 +20,7 @@
             spacing: "15dp"
             MDLabel:
                 id: label1
-                text: "Where are going to?"
+                text: "Where are you going to?"
                 size_hint_y: None
                 height: self.texture_size[1] + 2*self.padding[1]
             MDCard:
