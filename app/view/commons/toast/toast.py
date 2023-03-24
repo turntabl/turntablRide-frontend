@@ -2,48 +2,54 @@ from kivy.core.window import Window
 from kivy.metrics import dp, sp
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.snackbar import Snackbar
-
 from app.utils.colors import Colors
 
 
 class Toaster(object):
-    """ Customized snackbar as app Toaster, extending from BaseSnackbar . This Toaster has been created to handle all customized user errors.
+    """Customized snackbar as app Toaster, extending from BaseSnackbar . This Toaster has been created to handle all customized user errors.
     The Toaster comes with two functionalities.
 
-    1. 
+    1.
         A simple Toaster with message
         To use this toast, just import it into your class and use. You may not need to instantiate.
         for example:
 
             `` Toaster(message="Message to display on Toster", bg_color= self.colors.ErrorColor.get("BackgroundErrorColor"), font_size=14).toast() ``
-        
+
         Note: You must call .toast() on Toaster in other to display it.
         i.e:
             Toaster(...).toast()
         just like above example
 
-    2. 
+    2.
         A simple Toaster with message and buttons.
         To use, just import it into your class and use. You may not need to instantiate.
         for example:
 
             `` Toaster(message="Message to display on Toster", bg_color=self.colors.ErrorColor.get("BackgroundErrorColor"), font_size=14).toast_with_buttons(2,["Cancel", "ok"], ["#F44336", "#F44336"],[lambda *args: 2,lambda *args: 4]) ``
-        
+
         Note: You must call .toast_with_buttons() on Toaster in other to display and use the buttons.
         i.e:
             Toaster(...).toast_with_buttons(...)
 
         TODO: Fix misalignment of button in toast
     """
-    def __init__(self,
-                 message: str = "Pass your own message here",
-                 bg_color: str = "BlueColor",
-                 font_size: int = 14,
-                 duration: int = 3,
-                 auto_dismiss: bool = True):
+
+    def __init__(
+        self,
+        message: str = "Pass your own message here",
+        bg_color: str = "BlueColor",
+        font_size: int = 14,
+        duration: int = 3,
+        auto_dismiss: bool = True,
+    ):
         self.message = message
         self.colors = Colors()
-        self.bg_color = self.colors.BlueColor.get("BackgroundColor") if bg_color == "BlueColor" else bg_color
+        self.bg_color = (
+            self.colors.BlueColor.get("BackgroundColor")
+            if bg_color == "BlueColor"
+            else bg_color
+        )
         self.font_size = font_size
         self.duration = duration
         self.auto_dismiss = auto_dismiss
@@ -56,9 +62,11 @@ class Toaster(object):
             font_size=sp(self.font_size),
             duration=self.duration,
             auto_dismiss=self.auto_dismiss,
-            radius= [10, 10, 10, 10]
-            )
-        self.toaster.size_hint_x = (Window.width - (self.toaster.snackbar_x * 2)) / Window.width
+            radius=[10, 10, 10, 10],
+        )
+        self.toaster.size_hint_x = (
+            Window.width - (self.toaster.snackbar_x * 2)
+        ) / Window.width
 
     def toast(self) -> "Toaster":
         """Call this method to display toast or to cause the toast to open and show.
@@ -69,12 +77,17 @@ class Toaster(object):
         """
         return self.toaster.open()
 
-    def toast_with_buttons(self, number_of_buttons: int, text: list[str], text_color: list[str], on_release_action:
-    list[object]):
+    def toast_with_buttons(
+        self,
+        number_of_buttons: int,
+        text: list[str],
+        text_color: list[str],
+        on_release_action: list[object],
+    ):
         """Extra functionality with the toast. Call this method to add buttons to the Toaster.
         The text,  text_color and on_release_action must be a list even if it a single button to display on Toaster
         NB: IT CURRENTLY HAS A BUG OF ALIGNMENT OF BUTTON COMPONENT
-        
+
         For example to show a single button
         number_of_buttons = 1
         text = ["Cancel"]
@@ -86,7 +99,7 @@ class Toaster(object):
         text = ["Cancel", "Dismiss"]
         text_color = ["#FFFFFF", " #F44336"]
         on_release_action = [do_cancel_action, do_dismiss_action]
-        So for each button would match 
+        So for each button would match
         MDFlatButton(
                 text = "Cancel",
                 text_color = "#FFFFFF",
@@ -112,6 +125,7 @@ class Toaster(object):
                 text_color=text_color[each_button].strip(),
                 on_release=on_release_action[each_button],
             )
-            for each_button in range(number_of_buttons) if number_of_buttons is not None]
+            for each_button in range(number_of_buttons)
+            if number_of_buttons is not None
+        ]
         return self.toast()
-

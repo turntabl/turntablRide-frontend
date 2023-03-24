@@ -1,3 +1,4 @@
+#:kivy 2.1.0 
 <LoginScreen>:
     md_bg_color: app.COLORS.WhiteColor.get("BackgroundColor")
     BoxLayout:
@@ -30,6 +31,6 @@
             md_bg_color: app.COLORS.BlueColor.get("BackgroundColor")
             line_color: 0, 0, 0, 0
             text_color: app.COLORS.WhiteColor.get("BackgroundColor")
-            on_press: root.controller.verify_user()
+            on_press: root.controller.login()
             size: dp(295), dp(0)
             pos_hint: {"center_x": 0.5}
