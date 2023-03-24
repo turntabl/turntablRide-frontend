@@ -1,5 +1,7 @@
 #:import LoginScreen app.view.screens.login_screen.login_screen
 #:import DestinationScreen app.view.screens.destination_screen.destination_screen
+#:import PickupLocationScreen app.view.screens.pickup_location_screen.pickup_location_screen
+
 ## Include reusable components to the top
 #:include app/view/commons/map_view/map_view.kv
 #:include app/view/commons/bottom_widget/bottom_widget.kv
@@ -21,4 +23,5 @@
 
 WindowManager:
     # LoginScreen:
-    DestinationScreen:
+    # DestinationScreen:
+    PickupLocationScreen:
