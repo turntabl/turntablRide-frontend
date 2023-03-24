@@ -1,10 +1,14 @@
-from kivymd.uix.snackbar import Snackbar
-from kivy.clock import Clock
-from loading import Loading
-import config
 import threading
+from kivy.clock import Clock
+
+from app.view.commons.toast.toast import Toaster
+from app.utils.colors import Colors
+from app.view.commons.loader.loader import Loader
+import config.config as config
 from kivymd.app import MDApp
-from google_auth import GoogleOAuth
+from app.lib.google_auth import GoogleOAuth
+
+
 
 
 class Authentication:
@@ -25,13 +29,13 @@ class Authentication:
         )
         self.login_thread = threading.Thread(target=self.google_login.login)
         self.login_thread.daemon = True
-        self.loading = Loading(self.google_login.stop_tok_server)
+        self.loading = Loader(self.google_login.stop_tok_server)
 
-    def login(self):
+    def login(self) -> None:
         """Method to call to start the login process."""
         self.loading.open()
         self.login_thread.start()
-
+    
     def after_login(self, token):
         """
         Is called after the login process is successful.
@@ -54,7 +58,8 @@ class Authentication:
             elif status_code == 401:
                 Clock.schedule_once(
                     lambda *args: (
-                        Snackbar(text="You don't have access to this screen").open(),
+                        Toaster(message="You don't have access to this screen", bg_color=Colors().ErrorColor.get("BackgroundColor"),
+                    font_size=14).toast(),
                     ),
                     0,
                 )
@@ -62,18 +67,26 @@ class Authentication:
         except requests.exceptions.RequestException:
             self.error_listener("Backend server is down")
 
+
+
+   
     def error_listener(self, msg):
         """Called whenever there is an error in the login process"""
 
         Clock.schedule_once(
             lambda *args: (
                 self.loading.dismiss(),
-                Snackbar(text=msg).open(),
+                Toaster(message=msg, bg_color=Colors().ErrorColor.get("BackgroundColor"),
+                    font_size=14).toast(),
             ),
             0,
         )
 
 
+    def login_and_register_user(self):
+        """Custom login response to hold user return responses"""
+        return Authentication().login()
+    
 def change_screen(root, resp):
     root.current = "dashboard"
     root.get_screen("dashboard").ids.dashboard.ids.welcome_text.text = resp.text

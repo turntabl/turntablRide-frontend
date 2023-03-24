@@ -4,7 +4,7 @@ import threading
 from werkzeug import Request, Response
 from werkzeug.serving import make_server
 from queue import Empty, Queue
-import google_auth.globals as glob
+import app.lib.google_auth.globals as glob
 
 queue = Queue()
 
@@ -12,14 +12,12 @@ queue = Queue()
 def oauth_server(goauth_client, client_secret):
     """
     Defines a server with a simple handler.
-
     Parameters
     ----------
     goauth_client : GoogleOAuth object
         An object of the GoogleOAuth class
     client_secret : str
         The client secret of the application provided by google.
-
     Return
     ------
     A BaseWSGIServer
@@ -64,12 +62,10 @@ def run_server(server):
     """
     Runs the server and shutdowns upon receiving a value in
     the queue or when triggered.
-
     Parameters
     ----------
     server : BaseWSGIServer
         A BaseWSGIServer instance
-
     Return
     ------
     token : Any
@@ -90,7 +86,6 @@ def check_for_stop():
     Checks for the stop_thread and returns if set else continues to
     wait for value to be put in queue.
     If value is put in queue, then it returns.
-
     Return
     ------
     token : Any

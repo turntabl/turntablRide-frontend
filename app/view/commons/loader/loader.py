@@ -4,10 +4,9 @@ from kivy.lang import Builder
 
 
 # used to load the kv file and make it available.
-Builder.load_file("kv_files/loading.kv")
 
 
-class Loading(MDDialog):
+class Loader(MDDialog):
     """This is a custom Dialog widget showing a spinner and a button"""
 
     def __init__(self, stop_server, **kwargs):

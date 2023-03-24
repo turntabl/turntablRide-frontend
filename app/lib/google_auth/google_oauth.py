@@ -1,15 +1,17 @@
 import socket
 import webbrowser
 import threading
-from google_auth.server import oauth_server, run_server
-from google_auth import globals as glob
+# from google_auth.server import oauth_server, run_server
+from app.lib.google_auth import globals as glob
 from oauthlib.oauth2 import WebApplicationClient
+
+from app.lib.google_auth.server import oauth_server, run_server
+
 
 
 class GoogleOAuth:
     """
     Provide Google OAuth2 to kivy apps.
-
     Notes
     -----
     Currently working for only web applications that require OAuth using Google.
@@ -20,7 +22,6 @@ class GoogleOAuth:
     ):
         """
         Creates an object of GoogleOAuth with parameters provided.
-
         Parameters
         ----------
         client_id : str
@@ -44,7 +45,6 @@ class GoogleOAuth:
         """
         Function to initiate the login process. Redirects user to consent page
         for authentication.
-
         Return
         ------
         True if consent page was being able to open for user
@@ -78,7 +78,6 @@ class GoogleOAuth:
         """
         Prepares the consent page for the user. This page is what the
         user is redirected to for authentication from google.
-
         Return
         ------
         consent_page : str
