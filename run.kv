@@ -1,35 +1,17 @@
-#:import CarRegistrationScreenContent app.screens.car_registration_screen
-#:import PickupLocationScreenContent app.screens.pickup_location_screen
-#:import DestinationScreenContent app.screens.destination_screen
-#:import LoginScreenContent app.screens.login_screen
-
-#:include kiv/commons/map_view.kv
-#:include kiv/commons/bottom_widget.kv
-#:include kiv/commons/main_blue_button.kv
-#:include kiv/commons/top_nav_button.kv
-
+#:import LoginScreen app.view.screens.login_screen.login_screen
 ## Include reusable components to the top
+# You should import and add your screen to the WindowManager:
+#      for example 
+#      `` #:import LoginScreen app.view.screens.login_screen.login_screen ``
+
+#      `` LoginScreen `` is the class name which contain the contents of the login_screen (actual screen for the login 
+#      created inside the app/view/screens/login_screen/login_screen.py file). 
+     
+#      Finally register the LoginScreen under WindowManager:
+#        WindowManager:
+#          LoginScreen: (from app/view/screens/login_screen/login_screen.py file)
+   
+
+
 WindowManager:
     LoginScreen:
-    DestinationScreen:
-    CarRegistrationScreen:
-    PickupLocationScreen:
-
-<LoginScreen>:
-    name: "_login_screen"
-    LoginScreenContent
-
-<DestinationScreen>:
-    name: "_destination_screen"
-    DestinationScreenContent
-    
-
-<CarRegistrationScreen>:
-    name: "_car_registration_screen"
-    CarRegistrationScreenContent
-    
-
-
-<PickupLocationScreen>:
-    name: "_pickup_location_screen"
-    PickupLocationScreenContent

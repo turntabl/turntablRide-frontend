@@ -1,11 +1,11 @@
 from kivy.core.text import LabelBase
 from kivy.resources import resource_add_path
-resource_add_path('fonts/')
+resource_add_path('assets/fonts/')
 class Fonts(object):
     """
     Application Fonts
     Usages: import into main class and use it directly
-    then in your kivy file or anywhere call it like this for example
+    then in your kivy file or anywhere call it like this; for example
         app.Fonts().fonts.get("jakarta")
     """
     def __init__(self):

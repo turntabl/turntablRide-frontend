@@ -1,29 +1,16 @@
 from kivy.core.window import Window
-from kivy.uix.screenmanager import ScreenManager
 from kivymd.app import MDApp
-from kivymd.uix.screen import MDScreen
 from kivymd.uix.screenmanager import MDScreenManager
 from app.utils.colors import Colors
 from app.utils.fonts import Fonts
-
-
-class LoginScreen(MDScreen):
-    pass
-
-
-class DestinationScreen(MDScreen):
-    pass
-
-
-class CarRegistrationScreen(MDScreen):
-    pass
-
-
-class PickupLocationScreen(MDScreen):
-    pass
-
-
+from config.config import PREFERRED_WINDOW_SIZE
 class WindowManager(MDScreenManager):
+    """ Manages and switches the applications to different screens.
+    Actual implementation is found in the ` run.kv ` file
+
+    :param MDScreenManager: Screen manager. This is the main class that will control your ~kivymd.uix.screen.MDScreen stack and memory  
+    :type MDScreenManager: ~kivymd.uix.screenmanager.MDScreenManager
+    """
     pass
 
 
@@ -33,10 +20,9 @@ class Run(MDApp):
         super().__init__()
         self.COLORS = Colors()
         self.Fonts = Fonts()
+        Window.size = PREFERRED_WINDOW_SIZE
 
-    def on_start(self):
-        Window.size = (360, 640)
-        
+    def on_start(self) -> None:
         self.theme_cls.theme_style = "Light"
 
 
