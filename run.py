@@ -10,7 +10,8 @@ class WindowManager(MDScreenManager):
     """Manages and switches the applications to different screens.
     Actual implementation is found in the ` run.kv ` file
 
-    :param MDScreenManager: Screen manager. This is the main class that will control your ~kivymd.uix.screen.MDScreen stack and memory
+    :param MDScreenManager: Screen manager. This is the main class that will control
+     your ~kivymd.uix.screen.MDScreen stack and memory
     :type MDScreenManager: ~kivymd.uix.screenmanager.MDScreenManager
     """
 

@@ -2,7 +2,8 @@ class Colors(object):
     """
     Application colors
     Usages: import into main class and use it directly
-    then in your kivy file or anywhere call it like this; for example using the ErrorColor
+    then in your kivy file or anywhere call it like this;
+    for example using the ErrorColor
         app.COLORS().ErrorColor.get("BackgroundColor")
 
     You may add your own colors here if need be

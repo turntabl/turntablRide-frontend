@@ -1,6 +1,7 @@
 """Call methods from the view and model"""
 from app.model.login_auth_model.login_auth import Authentication
-from app.view.screens.login_screen.login_screen import LoginScreen
+
+# from app.view.screens.login_screen.login_screen import LoginScreen
 
 
 class LoginAuthenticationController:
@@ -11,9 +12,9 @@ class LoginAuthenticationController:
     the view to control its actions.
     """
 
-    def __init__(self) -> None:
-        self.view = LoginScreen()
-        self.model = Authentication(self.after_login, self.view.show_error_toast)
+    def __init__(self, view) -> None:
+        self.view = view
+        self.model = Authentication(self.after_login, self.on_error)
 
     def login(self):
         self.view.show_loader()
@@ -26,3 +27,7 @@ class LoginAuthenticationController:
             self.view.go_to_main_screen(msg)
         else:
             self.view.show_error_toast(msg)
+
+    def on_error(self, msg):
+        self.view.dismiss_loader()
+        self.view.show_error_toast(msg)
