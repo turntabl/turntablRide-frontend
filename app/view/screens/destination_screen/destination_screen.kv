@@ -1,13 +1,13 @@
 <DestinationScreen>:
     destination: destination
-
+    name: "DestinationScreen"
+    
     MDFloatLayout:
         MapView: # Inherited map from the app/view/commons/map_view
             pos_hint: {"top": 1}
             size_hint: 1, 1
             id: mapview
             z: -1
-
 
         MDIconButton:
             id: menu_btn
@@ -40,8 +40,6 @@
                 text: "Next"
                 on_release:
                     root.destination_controller(destination.text).register_destination()
-                    # app.root.current = "_destination_screen"  if  root.destination_details()["status"]=="error" else "_car_registration_screen"
-
 
 
 
