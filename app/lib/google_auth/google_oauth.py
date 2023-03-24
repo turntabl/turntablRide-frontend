@@ -1,4 +1,3 @@
-import threading
 import webbrowser
 from app.lib.google_auth.server import get_oauth_server, wait_for_token, serve_server
 from app.lib.google_auth import globals as glob
@@ -32,6 +31,11 @@ class GoogleOAuth:
         success_listener : func
             A function to be called the user is authenticated. Function should
             accept one parameter which is the token received.
+        error_listener : func
+            A function that is called when there is an error during the login process.
+            Must accept one argument
+        kwargs : dict
+            Key values parameters sent to WebApplicationClient
         """
         self.succ_listener = success_listener
         self.err_listener = error_listener
@@ -46,7 +50,7 @@ class GoogleOAuth:
         for authentication.
         """
         if is_connected():
-            threading.Thread(target=self._start_login, daemon=True).start()
+            self._start_login()
         else:
             self.err_listener("No internet Connection")
 

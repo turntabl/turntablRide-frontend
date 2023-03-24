@@ -1,8 +1,6 @@
 """Call methods from the view and model"""
 from app.model.login_auth_model.login_auth import Authentication
 
-# from app.view.screens.login_screen.login_screen import LoginScreen
-
 
 class LoginAuthenticationController:
     """
@@ -14,13 +12,13 @@ class LoginAuthenticationController:
 
     def __init__(self, view) -> None:
         self.view = view
-        self.model = Authentication(self.after_login, self.on_error)
+        self.model = Authentication(self.success, self.on_error)
 
     def login(self):
         self.view.show_loader()
         self.model.login_user()
 
-    def after_login(self, token):
+    def success(self, token):
         code, msg = self.model.fetch_data(token)
         self.view.dismiss_loader()
         if code == 200:

@@ -17,7 +17,6 @@ class LoginScreen(MDScreen):
         super().__init__(*args, **kwargs)
         self.controller = LoginAuthenticationController(self)
         self.app = MDApp.get_running_app()
-
         self.loader = Loader(func=trigger_server_stop)
 
     def show_loader(self):
@@ -27,9 +26,15 @@ class LoginScreen(MDScreen):
         self.loader.dismiss()
 
     def go_to_main_screen(self, data):
-        root = self.app.root
-        root.current = "dashboard"
-        root.get_screen("dashboard").ids.dashboard.ids.welcome_text.text = data
+        """
+        Screen to go after the login process is done and no error occured.
+
+        Parameters
+        ----------
+        data : Any
+            The data to be used to populate the next screen.
+        """
+        pass
 
     def show_error_toast(self, msg):
         Clock.schedule_once(
