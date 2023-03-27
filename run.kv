@@ -1,4 +1,10 @@
 #:import LoginScreen app.view.screens.login_screen.login_screen
+#:import DepartureScreen app.view.screens.departure_screen.departure_screen
+## Include reusable components to the top
+#:include app/view/commons/map_view/map_view.kv
+#:include app/view/commons/bottom_widget/bottom_widget.kv
+#:include app/view/commons/rectangle_flat_button/main_blue_button.kv
+#:include app/view/commons/top_navigator/top_nav_button.kv
 ## Include reusable components to the top
 # You should import and add your screen to the WindowManager:
 #      for example 
@@ -14,4 +20,5 @@
 
 
 WindowManager:
-    LoginScreen:
+    # LoginScreen:
+    DepartureScreen
