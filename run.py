@@ -4,6 +4,8 @@ from kivymd.uix.screenmanager import MDScreenManager
 from app.utils.colors import Colors
 from app.utils.fonts import Fonts
 from config.config import PREFERRED_WINDOW_SIZE, APP_TITLE, APP_ICON
+
+
 class WindowManager(MDScreenManager):
     """ Manages and switches the applications to different screens.
     Actual implementation is found in the ` run.kv ` file
