@@ -42,4 +42,8 @@ class Colors(object):
         self.ErrorColor = {
             "BackgroundColor": "#B00020",
             "TextColor": "#B00020"
-        }
+            }
+        self.SuccessColor = {
+            "BackgroundColor": "#4BB543",
+            "TextColor": "#B00020"
+            }
