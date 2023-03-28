@@ -1,0 +1,64 @@
+<PickupLocationScreen>:
+    pick_up: pick_up
+    MDFloatLayout:
+        MapView:
+            pos_hint: {"top": 1}
+            size_hint: 1, 1
+            id: mapview
+            z: -1
+
+        MDIconButton:
+            pos_hint: {"top": 0.99, "right": .15}
+            id: back_btn
+            icon: "arrow-left"
+            on_press : app.root.current="car_registration_screen_name"
+
+        MDIconButton:
+            id: menu_btn
+            icon: "dots-vertical"
+            pos_hint: {"top": 0.99, 'right': .99}
+
+        MDCard:
+            height: 220
+            MDGridLayout:
+                orientation: "lr-tb"
+                rows: 3
+                spacing: "15dp"
+
+                MDLabel:
+                    id: label1
+                    text: "Where should they meet you?"
+                    size_hint_y: None
+                    height: self.texture_size[1] + 2*self.padding[1]
+                MDCard:
+                    size_hint: 1, 1
+                    size: "291dp", "61dp"
+                    line_color: app.COLORS.BordersColor.get("BlueBorder")
+                    md_bg_color: app.COLORS.GreyColor.get("BackgroundColor")
+                    radius: [10, 10, 10, 10]
+
+
+                    MDTextField:
+                        id: pick_up
+                        hint_text: "Pickup Location"
+                        icon_left: "radiobox-marked"
+                        #height: "10dp"
+
+
+                MDRectangleFlatButton:
+                    id: car_details_next_btn
+                    size_hint_x: 1
+                    text: "Next"
+                    md_bg_color: "#4285F4"
+                    line_color: "#4285F4"
+                    text_color: "white"
+                    on_press: root.get_pickup_location_details()
+
+
+
+
+
+
+
+
+
