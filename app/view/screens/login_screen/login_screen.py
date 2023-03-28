@@ -1,7 +1,6 @@
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
 from kivy.clock import Clock
-from app.utils.colors import Colors
 from app.view.commons.loader.loader import Loader
 from app.lib.google_auth import trigger_server_stop
 from app.view.commons.toast.toast import Toaster
@@ -41,7 +40,7 @@ class LoginScreen(MDScreen):
             lambda *args: (
                 Toaster(
                     message=msg,
-                    bg_color=Colors().ErrorColor.get("BackgroundColor"),
+                    bg_color=self.app.COLORS.ErrorColor.get("BackgroundColor"),
                     font_size=14,
                 ).toast(),
             ),

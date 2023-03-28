@@ -55,7 +55,7 @@ def get_oauth_server(goauth_client, client_secret):
             return Response("Return to the application to proceed", 200)
         return Response("Invalid Parameters.", 401)
 
-    return make_server(glob.HOST, glob.PORT, callback, ssl_context="adhoc")
+    return make_server(glob.HOST, glob.PORT, callback)
 
 
 def wait_for_token():
