@@ -35,10 +35,12 @@
                 text: "[b]17:30[/b]"
             MDTextField:
                 id: departure
+                mode: "fill"
                 icon_left: "alarm"
-                hint_text: "HH:MM:SS"
-                validator: "time"
-                helper_text: "Max Waiting Time"
-                mode: "rectangle"
+                hint_text: "Max Waiting Time"
+                font_size: 14.0
+                line_color_normal: app.COLORS.BlueColor.get("BackgroundColor")
+                line_color_focus: app.COLORS.BlueColor.get("BackgroundColor")
+                radius: [10, 10, 10, 10]
             MDRectangleFlatButton:
                 text: "[b]Confirm[/b]"
