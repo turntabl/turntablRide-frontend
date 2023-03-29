@@ -19,7 +19,6 @@ def get_oauth_server(goauth_client, client_secret):
         An object of the GoogleOAuth class
     client_secret : str
         The client secret of the application provided by google.
-
     Return
     ------
     A BaseWSGIServer

@@ -8,7 +8,6 @@ from oauthlib.oauth2 import WebApplicationClient
 class GoogleOAuth:
     """
     Provide Google OAuth2 to kivy apps.
-
     Notes
     -----
     Currently working for only web applications that require OAuth using Google.
@@ -19,7 +18,6 @@ class GoogleOAuth:
     ):
         """
         Creates an object of GoogleOAuth with parameters provided.
-
         Parameters
         ----------
         client_id : str
@@ -65,7 +63,6 @@ class GoogleOAuth:
         """
         Prepares the consent page for the user. This page is what the
         user is redirected to for authentication from google.
-
         Return
         ------
         consent_page : str
