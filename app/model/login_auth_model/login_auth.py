@@ -1,9 +1,6 @@
 import requests
 import config.config as config
 from app.lib.google_auth import GoogleOAuth
-import multitasking
-
-multitasking.set_max_threads(10)
 
 
 class Authentication:
@@ -20,7 +17,6 @@ class Authentication:
             config.CLIENT_ID, config.CLIENT_SECRET, after_login, error_listener
         )
 
-    @multitasking.task
     def login_user(self):
         """Method to call to start the login process."""
         self.google_auth.login()

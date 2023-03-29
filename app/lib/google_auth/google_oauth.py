@@ -3,6 +3,7 @@ from app.lib.google_auth.server import get_oauth_server, wait_for_token, serve_s
 from app.lib.google_auth import globals as glob
 from app.lib.google_auth.utils import is_connected
 from oauthlib.oauth2 import WebApplicationClient
+import threading
 
 
 class GoogleOAuth:
@@ -48,7 +49,7 @@ class GoogleOAuth:
         for authentication.
         """
         if is_connected():
-            self._start_login()
+            threading.Thread(target=self._start_login, daemon=True).start()
         else:
             self.err_listener("No internet Connection")
 
