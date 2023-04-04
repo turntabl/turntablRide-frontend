@@ -58,7 +58,7 @@ class GoogleOAuth:
         serve_server(token_server)
         webbrowser.open(self._consent_page, 1, False)
         self._token = wait_for_token()
-        token_server.shutdown()
+        token_server.server_close()
 
     def _prepare_consent_page(self):
         """
