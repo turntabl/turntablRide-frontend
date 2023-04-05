@@ -1,4 +1,6 @@
 import webbrowser
+
+import requests
 from app.lib.google_auth.server import get_oauth_server, wait_for_token, serve_server
 from app.lib.google_auth import globals as glob
 from app.lib.google_auth.utils import is_connected
@@ -11,7 +13,7 @@ class GoogleOAuth:
     Provide Google OAuth2 to kivy apps.
     Notes
     -----
-    Currently working for only web applications that require OAuth using Google.
+    Currently working for only desktop applications that require OAuth using Google.
     """
 
     def __init__(
@@ -34,13 +36,14 @@ class GoogleOAuth:
             A function that is called when there is an error during the login process.
             Must accept one argument
         kwargs : dict
-            Key values parameters sent to WebApplicationClient
+            Key values parameters passed to WebApplicationClient
         """
         self.succ_listener = success_listener
         self.err_listener = error_listener
         self.client_id = client_id
         self._client_secret = client_secret
         self.web_client = WebApplicationClient(client_id, **kwargs)
+        # self.web_client.prepare_refresh_token_request
         self._consent_page = self._prepare_consent_page()
 
     def login(self):
@@ -72,6 +75,26 @@ class GoogleOAuth:
         consent_page = self.web_client.prepare_request_uri(
             glob.google_endpoints["AUTHORIZATION_ENDPOINT"],
             redirect_uri=glob.CALLBACK_URL,
-            scope=["email", "profile"],
+            scope=["openid", "email", "profile"],
         )
         return consent_page
+
+    def refresh_token(self):
+
+        print(self.web_client.token["refresh_token"])
+        url, header, body = self.web_client.prepare_refresh_token_request(
+            glob.google_endpoints["TOKEN_ENDPOINT"],
+            refresh_token=self.web_client.token["refresh_token"],
+        )
+
+        res = requests.post(
+            url,
+            headers=header,
+            data=body,
+            auth=(
+                self.client_id,
+                self._client_secret,
+            ),
+        )
+
+        return res.json()

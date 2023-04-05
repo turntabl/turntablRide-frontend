@@ -27,7 +27,6 @@ def get_oauth_server(goauth_client, client_secret: str):
     @Request.application
     def callback(request):
         code = request.args.get("code")
-        print(code)
         if code:
             token_url, headers, body = goauth_client.web_client.prepare_token_request(
                 glob.google_endpoints["TOKEN_ENDPOINT"],
@@ -50,8 +49,11 @@ def get_oauth_server(goauth_client, client_secret: str):
                 json.dumps(token_response.json())
             )
 
+            print(token_response.json())
+            print("-" * 50)
+
             token_queue.put(goauth_client.web_client.token["id_token"])
-            goauth_client.succ_listener(goauth_client.web_client.token["id_token"])
+            goauth_client.succ_listener(goauth_client)
             return Response("Return to the application to proceed", 200)
         return Response("Invalid Parameters.", 401)
 

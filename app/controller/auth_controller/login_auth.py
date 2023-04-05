@@ -18,8 +18,8 @@ class LoginAuthenticationController:
         self.view.show_loader()
         self.model.login_user()
 
-    def success(self, token):
-        code, msg = self.model.fetch_data(token)
+    def success(self, g_client):
+        code, msg = self.model.fetch_data(g_client.web_client.token["id_token"])
         self.view.dismiss_loader()
         if code == 200:
             self.view.go_to_main_screen(msg)
