@@ -1,0 +1,41 @@
+<RidersScreen>:
+    MapView:
+        size_hint: 1, 1
+        pos_hint: {"top": 1, "left": 1}
+
+    MDBoxLayout:
+        id: navbar_box
+        orientation: "horizontal"
+        size_hint: 1, .05
+        padding: dp(4), 0
+        pos_hint: {"top": .96}
+
+        MDIconButton:
+            id: back_btn
+            icon: "arrow-left"
+
+        MDWidget:
+
+        MDIconButton:
+            id: menu_btn
+            icon: "dots-vertical"
+
+    
+    MDCard:
+        size_hint_y: .4
+
+        RidersContent:
+
+
+
+<RidersContent@BoxLayout>:
+    orientation: "vertical"
+    spacing: dp(10)
+    padding: dp(5)
+
+    MDLabel:
+        text: "You are riding with 4 others.\nThey would be notified once you confirm."
+        bold: True
+        font_name: "jakarta"
+        color: "#808081"
+        halign: "center"
