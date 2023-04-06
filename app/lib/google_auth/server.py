@@ -49,8 +49,8 @@ def get_oauth_server(goauth_client, client_secret: str):
                 json.dumps(token_response.json())
             )
 
-            print(token_response.json())
-            print("-" * 50)
+            print(goauth_client.web_client.token)
+            print("-" * 100)
 
             token_queue.put(goauth_client.web_client.token["id_token"])
             goauth_client.succ_listener(goauth_client)

@@ -19,6 +19,7 @@ class LoginAuthenticationController:
         self.model.login_user()
 
     def success(self, g_client):
+        g_client.refresh_token()
         code, msg = self.model.fetch_data(g_client.web_client.token["id_token"])
         self.view.dismiss_loader()
         if code == 200:

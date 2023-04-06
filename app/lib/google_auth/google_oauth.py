@@ -1,3 +1,4 @@
+import json
 import webbrowser
 
 import requests
@@ -81,12 +82,12 @@ class GoogleOAuth:
 
     def refresh_token(self):
 
-        print(self.web_client.token["refresh_token"])
         url, header, body = self.web_client.prepare_refresh_token_request(
             glob.google_endpoints["TOKEN_ENDPOINT"],
             refresh_token=self.web_client.token["refresh_token"],
         )
 
+        print(body)
         res = requests.post(
             url,
             headers=header,
@@ -97,4 +98,6 @@ class GoogleOAuth:
             ),
         )
 
+        self.web_client.parse_request_body_response(json.dumps(res.json()))
+        print(self.web_client.token)
         return res.json()
