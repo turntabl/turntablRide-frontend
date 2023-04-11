@@ -1,0 +1,18 @@
+<ChatScreen>:
+    # BoxLayout to hold the chat screen
+    BoxLayout:
+        orientation: "vertical"        
+        # ScrollView widget to allow scrolling
+        ScrollView:
+            # Label widget to display the chat messages
+            Label:
+                id: chat_label
+                text: ""
+                font_size: 14   
+        # TextInput widget for users to enter new messages
+        TextInput:
+            id: message_input
+            size_hint: 1, None
+            height: 30
+            multiline: False
+            on_text_validate: root.send_message()
