@@ -12,10 +12,10 @@ class PickupLocationScreen(MDScreen):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.pick_up = ObjectProperty()
+        self.pickup_location = PickupLocationController
 
     def get_pickup_location_details(self):
-        register = PickupLocation(self.pick_up.text)
+        register = PickupLocationController(self.pick_up.text)
         return register.register_pickup_location()
-
 
 
