@@ -1,6 +1,6 @@
 from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
-from app.controller.chat_screen_controller.chat_screen import ChatScreenController
+from app.controller.chat_screen_controller.chat import ChatScreenController
 
 Builder.load_file("app/view/screens/chat_screen/chat_screen.kv")
 
