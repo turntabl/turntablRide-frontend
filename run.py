@@ -1,8 +1,10 @@
+import time
 from kivy.core.window import Window
 from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
 from app.utils.colors import Colors
 from app.utils.fonts import Fonts
+from app.utils.credentials import get_credentials, refresh_credentials
 from config.config import PREFERRED_WINDOW_SIZE, APP_TITLE, APP_ICON
 
 
@@ -10,7 +12,8 @@ class WindowManager(MDScreenManager):
     """Manages and switches the applications to different screens.
     Actual implementation is found in the ` run.kv ` file
 
-    :param MDScreenManager: Screen manager. This is the main class that will control your ~kivymd.uix.screen.MDScreen stack and memory
+    :param MDScreenManager: Screen manager. This is the main class that will control
+    your ~kivymd.uix.screen.MDScreen stack and memory
     :type MDScreenManager: ~kivymd.uix.screenmanager.MDScreenManager
     """
 
@@ -29,6 +32,13 @@ class Run(MDApp):
 
     def on_start(self) -> None:
         self.theme_cls.theme_style = "Light"
+        self.credentials = get_credentials()
+        if self.credentials["id_token"] is not None:
+            if float(self.credentials["expires_at"]) < time.time():
+                result = refresh_credentials(self.credentials["refresh_token"])
+            if result is not None:
+                self.credentials = result
+                self.root.current = "DestinationScreen"
 
 
 if __name__ == "__main__":

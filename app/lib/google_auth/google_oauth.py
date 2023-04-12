@@ -1,7 +1,6 @@
-import json
 import webbrowser
-
 import requests
+import urllib.parse
 from app.lib.google_auth.server import get_oauth_server, wait_for_token, serve_server
 from app.lib.google_auth import globals as glob
 from app.lib.google_auth.utils import is_connected
@@ -44,7 +43,6 @@ class GoogleOAuth:
         self.client_id = client_id
         self._client_secret = client_secret
         self.web_client = WebApplicationClient(client_id, **kwargs)
-        # self.web_client.prepare_refresh_token_request
         self._consent_page = self._prepare_consent_page()
 
     def login(self):
@@ -76,28 +74,25 @@ class GoogleOAuth:
         consent_page = self.web_client.prepare_request_uri(
             glob.google_endpoints["AUTHORIZATION_ENDPOINT"],
             redirect_uri=glob.CALLBACK_URL,
-            scope=["openid", "email", "profile"],
+            scope=["email", "profile"],
+            access_type="offline",
         )
         return consent_page
 
-    def refresh_token(self):
 
-        url, header, body = self.web_client.prepare_refresh_token_request(
-            glob.google_endpoints["TOKEN_ENDPOINT"],
-            refresh_token=self.web_client.token["refresh_token"],
-        )
-
-        print(body)
+def refresh(refresh_token, client_id, client_secret):
+    url = glob.google_endpoints["TOKEN_ENDPOINT"]
+    header = {"content-type": "application/x-www-form-urlencoded"}
+    body = urllib.parse.urlencode(
+        {
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token,
+        }
+    ).encode("utf-8")
+    try:
         res = requests.post(
-            url,
-            headers=header,
-            data=body,
-            auth=(
-                self.client_id,
-                self._client_secret,
-            ),
+            url, headers=header, data=body, auth=(client_id, client_secret)
         )
-
-        self.web_client.parse_request_body_response(json.dumps(res.json()))
-        print(self.web_client.token)
         return res.json()
+    except ConnectionError:
+        return None

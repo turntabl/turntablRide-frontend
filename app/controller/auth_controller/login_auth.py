@@ -1,5 +1,6 @@
 """Call methods from the view and model"""
 from app.model.login_auth_model.login_auth import Authentication
+from app.utils.credentials import save_credentials
 
 
 class LoginAuthenticationController:
@@ -18,9 +19,9 @@ class LoginAuthenticationController:
         self.view.show_loader()
         self.model.login_user()
 
-    def success(self, g_client):
-        g_client.refresh_token()
-        code, msg = self.model.fetch_data(g_client.web_client.token["id_token"])
+    def success(self, token):
+        save_credentials(token)
+        code, msg = self.model.fetch_data(token["id_token"])
         self.view.dismiss_loader()
         if code == 200:
             self.view.go_to_main_screen(msg)

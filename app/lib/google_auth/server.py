@@ -48,12 +48,8 @@ def get_oauth_server(goauth_client, client_secret: str):
             goauth_client.web_client.parse_request_body_response(
                 json.dumps(token_response.json())
             )
-
-            print(goauth_client.web_client.token)
-            print("-" * 100)
-
             token_queue.put(goauth_client.web_client.token["id_token"])
-            goauth_client.succ_listener(goauth_client)
+            goauth_client.succ_listener(goauth_client.web_client.token)
             return Response("Return to the application to proceed", 200)
         return Response("Invalid Parameters.", 401)
 
