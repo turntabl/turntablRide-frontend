@@ -3,7 +3,7 @@ class Colors(object):
     Application colors
     Usages: import into main class and use it directly
     then in your kivy file or anywhere call it like this; for example using the ErrorColor
-        app.COLORS().ErrorColor.get("BackgroundColor")
+        app.COLORS.ErrorColor.get("BackgroundColor")
 
     You may add your own colors here if need be
     """
@@ -17,7 +17,10 @@ class Colors(object):
             "FlatButtonDown": "#CCCCCC",
         }
         self.WhiteColor = {"BackgroundColor": "#FFFFFF", "TextColor": "#FFFFFF"}
-        self.GreyColor = {"BackgroundColor": "#F0F1F1", "TextColor": "#F0F1F1"}
+        self.GreyColor = {
+            "BackgroundColor": [135, 135, 135, 0.92],
+            "TextColor": [135, 135, 135, 0.92],
+        }
         self.BlueColor = {"BackgroundColor": "#4285F4", "TextColor": "#4285F4"}
         self.RedColor = {"BackgroundColor": "#F44336", "TextColor": "#F44336"}
         self.BordersColor = {"BlueBorder": "#4285F4", "GreyBorder": "#F0F1F1"}
