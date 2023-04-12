@@ -35,9 +35,12 @@ class Run(MDApp):
         self.credentials = get_credentials()
         if self.credentials["id_token"] is not None:
             if float(self.credentials["expires_at"]) < time.time():
-                result = refresh_credentials(self.credentials["refresh_token"])
-            if result is not None:
-                self.credentials = result
+                self.credentials = refresh_credentials(
+                    self.credentials["refresh_token"]
+                )
+                if self.credentials is not None:
+                    self.root.current = "DestinationScreen"
+            else:
                 self.root.current = "DestinationScreen"
 
 
