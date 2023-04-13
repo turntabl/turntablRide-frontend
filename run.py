@@ -1,4 +1,5 @@
 import time
+import multitasking
 from kivy.core.window import Window
 from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
@@ -41,6 +42,9 @@ class Run(MDApp):
                     self.root.current = "DestinationScreen"
             else:
                 self.root.current = "DestinationScreen"
+
+    def on_stop(self):
+        multitasking.killall(1, 2)
 
 
 if __name__ == "__main__":

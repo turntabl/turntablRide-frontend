@@ -3,7 +3,6 @@ from kivy.lang import Builder
 from kivymd.uix.screen import MDScreen
 from kivy.clock import Clock
 from app.view.commons.loader.loader import Loader
-from app.lib.google_auth import trigger_server_stop
 from app.view.commons.toast.toast import Toaster
 from app.controller.auth_controller.login_auth import LoginAuthenticationController
 
@@ -19,7 +18,7 @@ class LoginScreen(MDScreen):
         super().__init__(*args, **kwargs)
         self.controller = LoginAuthenticationController(self)
         self.app = MDApp.get_running_app()
-        self.loader = Loader(func=trigger_server_stop)
+        self.loader = Loader()
 
     def show_loader(self):
         self.loader.open()
@@ -36,7 +35,10 @@ class LoginScreen(MDScreen):
         data : Any
             The data to be used to populate the next screen.
         """
-        pass
+        Clock.schedule_once(
+            lambda *args: (self._go_to_main_screen(),),
+            0,
+        )
 
     def show_error_toast(self, msg):
         Clock.schedule_once(
@@ -49,3 +51,6 @@ class LoginScreen(MDScreen):
             ),
             0,
         )
+
+    def _go_to_main_screen(self):
+        self.app.root.current = "DestinationScreen"

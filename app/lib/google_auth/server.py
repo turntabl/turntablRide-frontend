@@ -1,12 +1,8 @@
 import json
-import threading
 import requests
 from werkzeug import Request, Response
 from werkzeug.serving import make_server
-from queue import Queue
-import app.lib.google_auth.globals as glob
-
-token_queue = Queue()
+from app.lib.google_auth.globals import HOST, PORT, CALLBACK_URL, google_endpoints
 
 
 def get_oauth_server(goauth_client, client_secret: str):
@@ -29,9 +25,9 @@ def get_oauth_server(goauth_client, client_secret: str):
         code = request.args.get("code")
         if code:
             token_url, headers, body = goauth_client.web_client.prepare_token_request(
-                glob.google_endpoints["TOKEN_ENDPOINT"],
+                google_endpoints["TOKEN_ENDPOINT"],
                 authorization_response=request.url.replace("http", "https"),
-                redirect_url=glob.CALLBACK_URL,
+                redirect_url=CALLBACK_URL,
                 code=code,
             )
 
@@ -48,21 +44,7 @@ def get_oauth_server(goauth_client, client_secret: str):
             goauth_client.web_client.parse_request_body_response(
                 json.dumps(token_response.json())
             )
-            token_queue.put(goauth_client.web_client.token["id_token"])
-            goauth_client.succ_listener(goauth_client.web_client.token)
             return Response("Return to the application to proceed", 200)
         return Response("Invalid Parameters.", 401)
 
-    return make_server(glob.HOST, glob.PORT, callback)
-
-
-def wait_for_token():
-    return token_queue.get()
-
-
-def trigger_server_stop():
-    token_queue.put(None)
-
-
-def serve_server(server):
-    threading.Thread(target=server.handle_request, daemon=True).start()
+    return make_server(HOST, PORT, callback)

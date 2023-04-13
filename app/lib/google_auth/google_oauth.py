@@ -1,11 +1,10 @@
 import webbrowser
 import requests
 import urllib.parse
-from app.lib.google_auth.server import get_oauth_server, wait_for_token, serve_server
-from app.lib.google_auth import globals as glob
+from app.lib.google_auth.server import get_oauth_server
+from app.lib.google_auth.globals import CALLBACK_URL, google_endpoints
 from app.lib.google_auth.utils import is_connected
 from oauthlib.oauth2 import WebApplicationClient
-import threading
 
 
 class GoogleOAuth:
@@ -16,9 +15,7 @@ class GoogleOAuth:
     Currently working for only desktop applications that require OAuth using Google.
     """
 
-    def __init__(
-        self, client_id, client_secret, success_listener, error_listener, **kwargs
-    ):
+    def __init__(self, client_id, client_secret, **kwargs):
         """
         Creates an object of GoogleOAuth with parameters provided.
         Parameters
@@ -38,8 +35,6 @@ class GoogleOAuth:
         kwargs : dict
             Key values parameters passed to WebApplicationClient
         """
-        self.succ_listener = success_listener
-        self.err_listener = error_listener
         self.client_id = client_id
         self._client_secret = client_secret
         self.web_client = WebApplicationClient(client_id, **kwargs)
@@ -51,16 +46,17 @@ class GoogleOAuth:
         for authentication.
         """
         if is_connected():
-            threading.Thread(target=self._start_login, daemon=True).start()
+            return self._start_login()
         else:
-            self.err_listener("No internet Connection")
+            res = "error"
+        return res
 
     def _start_login(self):
         token_server = get_oauth_server(self, self._client_secret)
-        serve_server(token_server)
         webbrowser.open(self._consent_page, 1, False)
-        self._token = wait_for_token()
+        token_server.handle_request()
         token_server.server_close()
+        return self.web_client.token
 
     def _prepare_consent_page(self):
         """
@@ -72,8 +68,8 @@ class GoogleOAuth:
             A Url in a string format
         """
         consent_page = self.web_client.prepare_request_uri(
-            glob.google_endpoints["AUTHORIZATION_ENDPOINT"],
-            redirect_uri=glob.CALLBACK_URL,
+            google_endpoints["AUTHORIZATION_ENDPOINT"],
+            redirect_uri=CALLBACK_URL,
             scope=["email", "profile"],
             access_type="offline",
         )
@@ -81,7 +77,7 @@ class GoogleOAuth:
 
 
 def refresh(refresh_token, client_id, client_secret):
-    url = glob.google_endpoints["TOKEN_ENDPOINT"]
+    url = google_endpoints["TOKEN_ENDPOINT"]
     header = {"content-type": "application/x-www-form-urlencoded"}
     body = urllib.parse.urlencode(
         {

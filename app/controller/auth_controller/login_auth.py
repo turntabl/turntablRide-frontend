@@ -13,13 +13,14 @@ class LoginAuthenticationController:
 
     def __init__(self, view) -> None:
         self.view = view
-        self.model = Authentication(self.success, self.on_error)
+        self.model = Authentication()
+        self.model.observers.append(self)
 
     def login(self):
         self.view.show_loader()
         self.model.login_user()
 
-    def success(self, token):
+    def on_success(self, token):
         save_credentials(token)
         code, msg = self.model.fetch_data(token["id_token"])
         self.view.dismiss_loader()
