@@ -1,5 +1,8 @@
 from kivymd.uix.dialog import MDDialog
+from kivy.lang import Builder
 from kivymd.uix.button import MDFlatButton
+
+Builder.load_file("app/view/commons/loader/loader.kv")
 
 
 class Loader(MDDialog):

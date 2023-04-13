@@ -28,7 +28,6 @@ class Run(MDApp):
         Window.size = PREFERRED_WINDOW_SIZE
         self.COLORS = Colors()
         self.Fonts = Fonts()
-        self.load_all_kv_files(self.directory)
 
     def on_start(self) -> None:
         self.theme_cls.theme_style = "Light"
