@@ -94,5 +94,5 @@ def refresh(refresh_token, client_id, client_secret):
             url, headers=header, data=body, auth=(client_id, client_secret)
         )
         return res.json()
-    except ConnectionError:
+    except requests.exceptions.ConnectionError:
         return None
