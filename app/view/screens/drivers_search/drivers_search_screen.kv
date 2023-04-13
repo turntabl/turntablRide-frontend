@@ -1,0 +1,160 @@
+#:import MDProgressBar kivymd.uix.progressbar
+
+<DriversSearchScreen>:
+    MDFloatLayout:
+        MapView:
+            pos_hint: {"top": 1}
+            size_hint: 1, 1
+            id: mapview
+            z: -1
+
+        MDIconButton:
+            pos_hint: {"top": 0.99, "right": .15}
+            id: back_btn
+            icon: "arrow-left"
+            on_press : app.root.current="car_registration_screen_name"
+
+        MDIconButton:
+            id: menu_btn
+            icon: "dots-vertical"
+            pos_hint: {"top": 0.99, 'right': .99}
+
+        MDCard:
+            height: 300
+            MDGridLayout:
+                orientation: "lr-tb"
+                rows: 4
+                spacing: "18dp"
+
+                MDLabel:
+                    id: label1
+                    text: "Drivers Unavailable"
+                    size_hint_y: None
+                    height: self.texture_size[1] + 2*self.padding[1]
+
+                MDLabel:
+                    text:"It seems there are no available drivers, we would alert you when a driver chooses you or is available. "
+                    halign: "center"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    color : app.COLORS.GreyColor.get("BackgroundColor")
+
+                MDLabel:
+                    id: label1
+                    text: "Would you like to pick an Uber and share with other turntablrs instead?"
+                    size_hint_y: None
+                    height: self.texture_size[1] + 2*self.padding[1]                
+
+                MDGridLayout:
+                    cols: 2
+                    orientation: "lr-tb"
+                    spacing: 30
+                    height: "40dp"
+
+                    MDRectangleFlatButton:
+                        id: driving_car_btn
+                        size_hint_x: 1
+                        text: "No, I Will wait"
+                        md_bg_color: app.COLORS.RedColor.get("BackgroundColor")
+                        line_color: app.COLORS.BlueColor.get("BackgroundColor")
+                        text_color: app.COLORS.WhiteColor.get("BackgroundColor")
+
+                    MDRectangleFlatButton:
+                        id: not_driving_car_btn
+                        size_hint_x: 1
+                        text: "Yes"
+                        md_bg_color: app.COLORS.BlueColor.get("BackgroundColor")
+                        line_color: app.COLORS.GreyColor.get("BackgroundColor")
+                        text_color:app.COLORS.WhiteColor.get("BackgroundColor")
+
+                
+
+        # MDCard:
+        #     height: 220
+        #     MDGridLayout:
+        #         orientation: "lr-tb"
+        #         rows: 3
+        #         spacing: dp(26)
+
+        #         MDLabel:
+        #             id: label1
+        #             text: "Looking for available drivers"
+        #             size_hint_y: None
+        #             height:self.texture_size[1] + 2*self.padding[1]
+
+        #         MDProgressBar:
+        #             id: progress_bar
+        #             value: 80
+        #             max: 100
+        #             size_hint: 0.8, None
+        #             pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        #             height: dp(23)
+        #             canvas:
+        #                 Clear
+        #                 Color:
+        #                     rgba: [0.8, 0.8, 0.8, 1]
+        #                 RoundedRectangle:
+        #                     pos: self.pos
+        #                     size: self.size
+        #                     radius: [15, 15, 15, 15]
+        #                 Color:
+        #                     rgba: [0.2588, 0.5216, 0.9569, 1]
+        #                 RoundedRectangle:
+        #                     pos: self.pos
+        #                     size: (self.width * (self.value / float(self.max)), self.height)
+        #                     radius: [15, 15, 15, 15]
+        #                 Color:
+        #                     rgba: [0.8, 0.8, 0.8, 1]
+        #                 RoundedRectangle:
+        #                     pos: (self.width * (self.value / float(self.max)), self.y)
+        #                     size: (self.width * ((self.max - self.value) / float(self.max)), self.height)
+        #                     radius: [0, 15, 15, 0]
+
+
+        #         MDLabel:
+        #             text:"Please wait, we are looking for a driving turntablr"
+        #             halign: "center"
+        #             pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        #             color : app.COLORS.GreyColor.get("BackgroundColor")
+
+
+        # MDCard:
+        #     height: 220
+        #     MDGridLayout:
+        #         orientation: "lr-tb"
+        #         rows: 4
+        #         spacing: dp(30)
+        #         pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        #         MDFloatLayout:
+        #             MDIcon:
+        #                 pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        #                 icon : "check-circle"
+        #                 color: app.COLORS.SuccessColor.get("BackgroundColor")
+        #                 font_size: dp(40)
+
+
+        #         MDLabel:
+        #             id: label1
+        #             text: "There are 4 Turntablrs Drivers available"
+        #             size_hint_y: None
+        #             height: self.texture_size[1] + 2*self.padding[1]
+
+
+        #         MDLabel:
+        #             text:"You may have to wait to be selected by a driver or ping one. You can only ping one driver at a time."
+        #             halign: "center"
+        #             color:[135, 135, 135, 0.92]
+
+        #         MDFloatLayout:
+        #             MDRectangleFlatButton:
+        #                 pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        #                 id: exit_btn
+        #                 text: "Exit"
+        #                 md_bg_color: app.COLORS.GreyColor.get("BackgroundColor")
+        #                 line_color: app.COLORS.GreyColor.get("BackgroundColor")
+        #                 text_color: "red"
+        #                 size_hint_y: None
+        #                 size_hint_x: None
+        #                 height: dp(40)
+        #                 on_press:
+        #                     print("Ouuuh")

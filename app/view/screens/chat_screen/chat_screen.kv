@@ -1,9 +1,59 @@
 <ChatScreen>:
     orientation: "vertical"
 
+    # Add navbar
+    MDBoxLayout:
+        size_hint: 1.95, 0.05
+        pos_hint: {"top":1}
+             
+        canvas.before:
+            Color: 
+                rgba: 0.23, 0.51, 0.965, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        MDIconButton:
+            pos_hint: {"top": 1.2, "right": 0.15}
+            id: back_btn
+            icon: "arrow-left"
+            theme_text_color: "Custom" # Set color myself
+            text_color: 1, 1, 1, 1 # Set color to white
+            md_bg_color: rgba(0, 0, 0, 0) # Remove circular background
+            on_press : root.send_message()
+
+        MDLabel:
+            id: Rider_label
+            text: "Yoofi's Ride Chat"
+            font_size: 18
+            bold: True
+            size_hint_y: 1
+            color: [1,1,1,1]
+            pos_hint: {"center_y": 0.5, "x": 0.25}
+
+        Button:
+            id: ride_details
+            text: ""
+            size_hint: 0.25, 0.1875
+            pos_hint:{"top": 0.5}
+            background_color: 0,0,0,0
+            on_press: root.send_message()
+
+            Image:
+                source: 'assets/images/Vector.png'
+                size_hint: 0.25, 0.1875
+                center_y: self.parent.center_y
+
+
+        MDIconButton:
+            id: menu_btn
+            icon: "dots-vertical"
+            pos_hint: {"top": 1.2, "right": 0.15}
+
+
     # Add a ScrollView widget to allow scrolling
     ScrollView:
-        size_hint_y: 0.9
+        size_hint_y: 0.8
 
         # Add a Label widget to display the chat messages
         Label:
@@ -13,19 +63,24 @@
             markup: True
 
     # Add a horizontal BoxLayout to hold the message input field and the send button
-    BoxLayout:
+    MDBoxLayout:
         orientation: "horizontal"
-        size_hint_y: 0.1
+        size_hint_y: 0.20
+        padding: 18
 
         # Add the TextInput widget for users to enter new messages
         TextInput:
             id: message_input
-            size_hint_x: 0.8
+            hint_text: "Send message to group"
+            size_hint:2.62, 0.4
+            # radius: [10, 10, 10, 10]
 
         # Add the Send button
         Button:
+            id: send_button
             text: ""
-            size_hint_x: 0.2
+            size_hint: 0.37, 0.37
+            background_color: 0,0,0,0
             on_press: root.send_message()
 
             Image:

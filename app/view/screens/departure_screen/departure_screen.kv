@@ -1,0 +1,46 @@
+<MDRectangleFlatButton>:
+    markup: True
+    font_size: 20
+
+<DepartureScreen>:
+    departure: departure
+
+    MDFloatLayout:
+        MapView:
+            id: mapview
+            pos_hint: {"top": 1, "left": 1}
+            size_hint: (1, 1)
+            z: -1
+
+        MDIconButton:
+            id: back_btn
+            pos_hint: {"top": 0.99, "right": 0.15}
+            icon: "arrow-left"
+
+        MDIconButton:
+            id: menu_btn
+            icon: "dots-vertical"
+            pos_hint: {"top": 0.99, "right": 0.99}
+
+
+    MDFloatLayout:
+        spacing: "10dp"
+        MDCard:
+            height: 260
+            spacing: "20dp"
+            MDLabel:
+                text: "[b]Set-Off Time[/b]"
+                markup: True
+            MDRectangleFlatButton:
+                text: "[b]17:30[/b]"
+            MDTextField:
+                id: departure
+                mode: "fill"
+                icon_left: "alarm"
+                hint_text: "Max Waiting Time"
+                font_size: 14.0
+                line_color_normal: app.COLORS.BlueColor.get("BackgroundColor")
+                line_color_focus: app.COLORS.BlueColor.get("BackgroundColor")
+                radius: [10, 10, 10, 10]
+            MDRectangleFlatButton:
+                text: "[b]Confirm[/b]"
