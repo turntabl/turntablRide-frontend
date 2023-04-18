@@ -1,10 +1,78 @@
+#:include 
+
+########################
+## Helper Widgets
+########################
 <CardLabel@MDLabel>:
     font_name: "jakarta"
     bold: True
     adaptive_height: True
 
+<CustomActionButton@Button>:
+    font_name: "jakarta"
+    font_size: dp(17)
+    size_hint: None, None
+    size: dp(151), dp(40)
+    markup: True
+    background_color: (0, 0, 0, 0)
+    background_normal: ""
+    canvas.before:
+        Color:
+            rgba: (66/255,132/255,245/255,1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [10]
+
+<LocationDetailsIcon@MDIcon>:
+    theme_text_color: "Custom"
+    font_size: dp(16)
+
+<LocationDetailsLabel@CardLabel>:
+    pos_hint: {"x": .15, "center_y": .5}
+    font_name: "assets/fonts/PlusJakartaSans-Medium.ttf"
+    color: "#7d7c7d"
+
+
+################################
+#### Main Screen Contents
+################################
 <AddingRidersScreen>:
     MapView:
+
+    MDFloatLayout:
+        size_hint: None, None
+        size: dp(75), dp(75)
+        x: dp(283)
+        y: dp(350)
+        radius: self.width / 2
+        line_color: app.COLORS.BlueColor["BackgroundColor"]
+        line_width: 1.2
+        md_bg_color: (1, 1, 1, .7)
+            
+        MDIconButton:
+            theme_icon_color: "Custom"
+            text_color: "#010001"
+            icon: "account"
+            icon_size: sp(35)
+            pos_hint: {"center_x": 0.5, "center_y": 0.6}
+            on_press: root.open_riders_section()
+        MDFlatButton:
+            text: "[b]4[/b]"
+            markup: True
+            font_name: "jakarta"
+            font_size: dp(20)
+            theme_text_color: "Custom"
+            text_color: app.COLORS.BordersColor["BlueBorder"]
+            padding: dp(15), dp(5)
+            adaptive_size: True
+            radius: self.width / 2
+            pos_hint: {"x": .08, "top": .47}
+            on_press: root.open_riders_section()
+
+#############################
+### Riders List
+############################
 
     MDBoxLayout:
         size_hint: 1, .1
@@ -44,16 +112,16 @@
                 halign: "center"
 
             CardLabel:
-                text: "Kelvin Mills" # possibly we will change this later
+                text: root.driver_name
                 adaptive_size: True
                 font_size: dp(18)
                 pos_hint: {"x": .02}
 
             MDBoxLayout:
                 line_color: app.COLORS.BlueColor["TextColor"]
-                line_width: 1
-                size_hint: 1, None
-                height: dp(81)
+                line_width: 1.2
+                size_hint: None, None
+                size: dp(291), dp(81)
                 pos_hint: {"x": .02, "y": .1}
                 radius: dp(10)
 
@@ -65,73 +133,36 @@
                     MDFloatLayout:
                         spacing: dp(7)
 
-                        MDIcon:
+                        LocationDetailsIcon:
                             icon: "radiobox-marked"
-                            theme_text_color: "Custom"
                             text_color: "#0184ff"
                             pos_hint: {"x": 0.02, "center_y": .5}
-                            font_size: dp(16)
-                        CardLabel:
+                        LocationDetailsLabel:
                             text: "Start Location"
-                            pos_hint: {"x": .15, "center_y": .5}
-                            font_name: "assets/fonts/PlusJakartaSans-Medium.ttf"
-                            color: "#7d7c7d"
                             canvas:
                                 Color:
                                     rgba: (207/255,208/255,208/255, 1)
                                 Line:
-                                    points: (64, 116, 316, 116)
+                                    points: (64, 116, 290, 116)
                                     width: .5
 
                     MDFloatLayout:
                         spacing: dp(7)
 
-                        MDIcon:
+                        LocationDetailsIcon:
                             icon: "map-marker"
-                            theme_text_color: "Custom"
                             text_color: app.COLORS.RedColor["TextColor"] 
                             pos_hint: {"x": 0.02, "center_y": .5}
-                            font_size: dp(16)
-                        CardLabel:
+                        LocationDetailsLabel:
                             text: "End Location"
-                            font_name: "assets/fonts/PlusJakartaSans-Medium.ttf"
-                            color: "#7d7c7d"
-                            pos_hint: {"x": .15, "center_y": .5}
 
             MDBoxLayout:
                 spacing: dp(30)
                 padding: dp(0), dp(5), dp(0), dp(15)
-                Button:
-                    text: "[b]Add User to Ride[/b]"
-                    font_name: "jakarta"
-                    font_size: dp(17)
-                    size_hint: None, None
-                    size: dp(151), dp(40)
-                    markup: True
-                    background_color: (0, 0, 0, 0)
-                    background_normal: ""
-                    canvas.before:
-                        Color:
-                            rgba: (66/255,132/255,245/255,1)
-                        RoundedRectangle:
-                            size: self.size
-                            pos: self.pos
-                            radius: [10]
                 
-                Button:
+                CustomActionButton:
+                    text: "[b]Add User to Ride[/b]"
+
+                CustomActionButton:
                     text: "[b]Done[/b]"
-                    font_name: "jakarta"
-                    markup: True
-                    background_color: (0, 0, 0, 0)
-                    font_size: dp(17)
-                    background_normal: ""
-                    size_hint_y: None
-                    height: dp(40)
-                    canvas.before:
-                        Color:
-                            rgba: (66/255,132/255,245/255,1)
-                        RoundedRectangle:
-                            size: self.size
-                            pos: self.pos
-                            radius: [10]
 
