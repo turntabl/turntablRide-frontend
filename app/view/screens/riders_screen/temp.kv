@@ -1,0 +1,165 @@
+#:include app/view/screens/riders_screen/added_riders_screen.kv
+
+#####################################
+####### Helper Widgets
+#####################################
+<RidersDetailsSection@MDBoxLayout>:
+    orientation: "vertical"
+    spacing: dp(8)
+    padding: dp(5), 0
+
+    CustomMDLabel:
+        text: "You are riding with 4 others.\nThey would be notified once you confirm."
+        color: "#808081"
+        halign: "center"
+
+    CustomMDLabel:
+        text: "Kelvin Mills"
+
+    DriversLocationWidget:
+
+<CustomMDLabel@MDLabel>:
+    font_name: "jakarta"
+    adaptive_height: True
+    bold: True
+
+<RidersCountSection@MDFloatLayout>:
+    size_hint: 1, .45
+    line_width: 2
+    adaptive_height: True
+    pos_hint: {"y": .48}
+
+    MDFloatLayout:
+        pos_hint: {"right": .98, "top": 1}
+        size_hint: None, None
+        size: "80dp", "80dp"
+        line_color: app.COLORS.BordersColor["BlueBorder"]
+        line_width: 1.4
+        radius: self.width / 2
+        md_bg_color: (1, 1, 1, .6)
+        
+        
+        MDIcon:
+            id: account_icon
+            badge_icon_color: "#010100"
+            icon: "account"
+            font_size: dp(40)
+            pos_hint: {"x": .25, "top": .9}
+            adaptive_size: True
+        MDLabel:
+            text: "4"
+            font_name: "jakarta"
+            bold: True
+            font_size: dp(20)
+            color: app.COLORS.BordersColor["BlueBorder"]
+            adaptive_size: True
+            pos_hint: {"x": .4, "top": .47}
+
+
+##################################
+###### Card Body
+##################################
+<DriversLocationWidget@BoxLayout>:
+    orientation: "vertical"
+
+    MDCard:
+        line_color: app.COLORS.BordersColor["BlueBorder"]
+        md_bg_color: app.COLORS.GreyColor["BackgroundColor"]
+        radius: dp(30)
+        padding: 10
+        line_width: 1.4
+        size_hint_y: None
+        height: drivers_location_box.height + dp(40)
+
+        MDAnchorLayout:
+            MDBoxLayout:
+                id: drivers_location_box
+                orientation: "vertical"
+                size_hint: .85, None
+
+                MDTextField:
+                    hint_text: "Start Location"
+                    icon_left: "radiobox-marked"
+                    icon_left_color_normal: "#0184ff"
+                    disabled: True
+                    mode: "rectangle"
+
+                MDTextField:
+                    hint_text: "End Location"
+                    icon_left: "map-marker"
+                    icon_left_color_normal: app.COLORS.RedColor["TextColor"]
+                    mode: "rectangle"
+                    disabled: True
+
+    CardFooter:
+
+
+#############################
+### End Card body section
+#############################
+
+################################
+#### Card Footer section
+################################
+<CardFooter@MDFloatLayout>:
+    padding: [5, 0, 5, 5]
+    CustomRectangleFlatButton:
+        text: "[b]Add User to Ride[/b]"
+        size_hint_x: .2
+        pos_hint: {"x": 0, "top": .75}
+        markup: True
+
+    CustomRectangleFlatButton:
+        text: "[b]Done[/b]"
+        size_hint_x: .4
+        pos_hint: {"right": 1, "top": .75}
+        markup: True
+
+<CustomRectangleFlatButton@MDRectangleFlatButton>:
+    font_size: dp(18)
+    md_bg_color: app.COLORS.BlueColor["TextColor"]
+    text_color: app.COLORS.WhiteColor["TextColor"]
+    font_name: "jakarta"
+#################################
+#### End Card Footer Section
+################################
+
+
+#####################################
+###### Main Widget
+#####################################
+<AddingRidersScreen>:
+    MapView:
+        size_hint: 1, 1
+        pos_hint: {"top": 1, "left": 1}
+
+    MDBoxLayout:
+        id: navbar_box
+        orientation: "horizontal"
+        size_hint: 1, .05
+        padding: dp(10), 0
+        pos_hint: {"top": .96}
+
+        MDIconButton:
+            id: back_btn
+            icon: "arrow-left"
+
+        MDWidget:
+
+        MDIconButton:
+            id: menu_btn
+            icon: "dots-vertical"
+
+
+    RidersListScreen:
+    
+
+    RidersCountSection:
+
+
+    MDCard:
+        size_hint_y: .45
+        padding: dp(10), dp(7)
+
+        RidersDetailsSection:
+            

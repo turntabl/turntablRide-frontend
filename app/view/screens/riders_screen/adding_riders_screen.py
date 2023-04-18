@@ -1,7 +1,9 @@
+import os
 from kivymd.uix.screen import MDScreen
 from kivy.lang import Builder
-from kivymd.uix.floatlayout import MDFloatLayout
 
-Builder.load_file("app/view/screens/riders_screen/adding_riders_screen.kv")
-class AddingRidersScreen(MDScreen, MDFloatLayout):
+dir = os.path.dirname(__file__)
+Builder.load_file(os.path.join(dir, "adding_riders_screen.kv"))
+
+class AddingRidersScreen(MDScreen):
     pass
