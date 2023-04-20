@@ -1,7 +1,7 @@
-#:include 
+#:include app/view/screens/riders_screen/added_riders_screen.kv
 
 ########################
-## Helper Widgets
+## Custom Helper Widgets
 ########################
 <CardLabel@MDLabel>:
     font_name: "jakarta"
@@ -55,6 +55,8 @@
             text_color: "#010001"
             icon: "account"
             icon_size: sp(35)
+            opacity: 1
+            md_bg_color: (0, 0, 0, 0)
             pos_hint: {"center_x": 0.5, "center_y": 0.6}
             on_press: root.open_riders_section()
         MDFlatButton:
@@ -66,20 +68,20 @@
             text_color: app.COLORS.BordersColor["BlueBorder"]
             padding: dp(15), dp(5)
             adaptive_size: True
+            opacity: 1
             radius: self.width / 2
             pos_hint: {"x": .08, "top": .47}
             on_press: root.open_riders_section()
-
-#############################
-### Riders List
-############################
-
+###########################
+##### Navigation Section
+###########################
     MDBoxLayout:
         size_hint: 1, .1
         padding: dp(10), dp(16), dp(10), 0
         pos_hint: {"top": 1}
         
-        MDIconButton: # change the opacity
+        MDIconButton:
+            id: prev_btn
             icon: "arrow-left"
             size_hint: None, None
             icon_size: sp(30)
@@ -89,11 +91,18 @@
         MDWidget:
 
         MDIconButton:
+            id: dropdown_btn
             icon: "dots-vertical"
             pos_hint: {"right": 1}
             md_bg_color: rgba(1, 1, 1, 0)
-            icon_size: sp(30)
             opacity: 1
+
+
+#############################
+### Riders List
+############################
+    RidersListSection:
+        y: root.height - self.height - dp(15)
 
     MDBoxLayout:
         size_hint: 1, None
@@ -101,7 +110,7 @@
 
         MDCard:
             height: self.parent.height
-            padding: dp(22), dp(5), dp(22), dp(5)
+            padding: dp(22), dp(5)
             spacing: dp(7)
             
             CardLabel:

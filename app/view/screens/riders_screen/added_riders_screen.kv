@@ -1,20 +1,115 @@
-<RidersListScreen@MDBoxLayout>:
-    size_hint: 1, .5
-    pos_hint: {"top": .745}
+<RiderListItem@MDBoxLayout>:
+    adaptive_height: True
+    MDCard:
+        md_bg_color: "#f4f5f4"
+        size_hint: None, None
+        padding: [0]
+        size: dp(335), dp(64)
+        radius: [5]
+
+        MDFloatLayout:
+            MDIcon:
+                icon: "account"
+                adaptive_size: True
+                pos_hint: {"x": 0.02, "top": 0.92}
+            CardLabel:
+                text: "Kelvin Mills"
+                adaptive_size: True
+                bold: False
+                pos_hint: {"x": 0.11, "top": 0.86}
+                color: "#5c96f5"
+            MDRectangleFlatButton:
+                text: "[b]Drop[/b]"
+                font_name: "jakarta"
+                theme_text_color: "Custom"
+                md_bg_color: "#f54236"
+                size_hint_x: None
+                width: dp(57)
+                text_color: "#ffffff"
+                font_size: dp(14)
+                line_color: self.md_bg_color
+                markup: True
+                on_release: print("Dropping rider...")
+                pos_hint: {"top": .92, "right": .98}  
+            MDIcon:
+                icon: "radiobox-marked"
+                theme_text_color: "Custom"
+                color: "#0085ff"
+                pos_hint: {"x": 0.01, "y": .05}
+            CardLabel:
+                text: "Advantage Place"
+                font_size: dp(15)
+                bold: False
+                pos_hint: {"x": 0.1, "y": .09}
+            MDIcon:
+                icon: "map-marker"
+                theme_text_color: "Custom"
+                color: "#f54236"
+                pos_hint: {"x": .53, "y": .05}
+            CardLabel:
+                text: "Teshie"
+                bold: False
+                pos_hint: {"x": .6, "y": .09 }
+
+
+
+<RidersListSection@MDBoxLayout>:
+    orientation: "vertical"
+    padding: dp(12), dp(10), dp(12), dp(1)
+    spacing: dp(10)
+    size_hint_y: None
+    height: dp(350)
+    md_bg_color: app.COLORS.WhiteColor["BackgroundColor"]
+
     MDBoxLayout:
-        orientation: "vertical"
-        line_color: "green"
-        line_width: 6
-        pos_hint: {"y": .5}
+        size_hint_y: None
+        height: dp(25)
+        padding: 0, dp(5)
+        border: [0, 0, 0, 1]
+        canvas:
+            Color:
+                rgba: (176/255, 176/255, 177/255, 1)
+            Line:
+                width: self.border[3]
+                points: [self.x, self.y, self.x + self.width, self.y]
 
-        MDLabel:
-            text: "Prince"
-            font_size: 30
+        CardLabel: # inherited from adding_riders_screen.kv
+            id: title_lbl
+            text: "Your Added Riders"
+            halign: "center"
+            color: "#8b8b8a"
+        
+        MDIconButton:
+            id: close_btn
+            icon: "close"
+            icon_color: "#eb4c3f"
+            theme_icon_color: "Custom"
+            adaptive_size: True
+            size_hint: None, None
+            size: title_lbl.height, title_lbl.height
+            icon_size: sp(30)
+            pos_hint: {"center_y": .9, "x": .1}
+            opacity: 1
+            md_bg_color: (0, 0, 0, 0)
+            on_press: print("Closing the section")
 
-        MDLabel:
-            text: "Karikari"
-            font_size: 30
+    
+    MDScrollView:
+        size_hint: 1, None
+        height: dp(290)
 
-        MDLabel:
-            text: "Awuah"
-            font_size: 30
+        MDBoxLayout:
+            orientation: "vertical"
+            adaptive_height: True
+            padding: 0, dp(5)
+            spacing: dp(7)
+
+            RiderListItem:
+            RiderListItem:
+            RiderListItem:
+            RiderListItem:
+            RiderListItem:
+            RiderListItem:
+            RiderListItem:
+
+    MDWidget:
