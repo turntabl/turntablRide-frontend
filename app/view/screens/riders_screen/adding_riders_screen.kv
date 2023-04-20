@@ -18,7 +18,7 @@
     background_normal: ""
     canvas.before:
         Color:
-            rgba: (66/255,132/255,245/255,1)
+            rgba: [66/255,132/255,245/255,1]
         RoundedRectangle:
             size: self.size
             pos: self.pos
@@ -58,7 +58,7 @@
             opacity: 1
             md_bg_color: (0, 0, 0, 0)
             pos_hint: {"center_x": 0.5, "center_y": 0.6}
-            on_press: root.open_riders_section()
+            on_press: root.open_riders_section(riders_section)
         MDFlatButton:
             text: "[b]4[/b]"
             markup: True
@@ -71,7 +71,7 @@
             opacity: 1
             radius: self.width / 2
             pos_hint: {"x": .08, "top": .47}
-            on_press: root.open_riders_section()
+            on_press: root.open_riders_section(riders_section)
 ###########################
 ##### Navigation Section
 ###########################
@@ -102,7 +102,9 @@
 ### Riders List
 ############################
     RidersListSection:
+        id: riders_section
         y: root.height - self.height - dp(15)
+        pos_hint: {"x": 1.01}
 
     MDBoxLayout:
         size_hint: 1, None

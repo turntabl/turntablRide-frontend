@@ -1,10 +1,9 @@
 import os
+
 from kivy.properties import StringProperty
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDTextButton
 from kivy.lang import Builder
-from kivy.core.window import Window
+from kivy.animation import Animation
 
 dir = os.path.dirname(__file__)
 Builder.load_file(os.path.join(dir, "adding_riders_screen.kv"))
@@ -13,6 +12,8 @@ Builder.load_file(os.path.join(dir, "adding_riders_screen.kv"))
 class AddingRidersScreen(MDScreen):
     driver_name = StringProperty("Kelvin Mills")
     
-    def open_riders_section(self):
-        print(self.ids)
-        print("Connecting to the riders section...")
+    def open_riders_section(self, widget):
+        Animation(pos_hint={"x": 0}, duration=0.2).start(widget)
+
+    def hide_riders_section(self, widget):
+        Animation(pos_hint={"x": 1.01}, duration=0.2).start(widget)

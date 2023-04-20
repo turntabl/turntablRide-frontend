@@ -52,7 +52,6 @@
                 pos_hint: {"x": .6, "y": .09 }
 
 
-
 <RidersListSection@MDBoxLayout>:
     orientation: "vertical"
     padding: dp(12), dp(10), dp(12), dp(1)
@@ -85,13 +84,11 @@
             icon_color: "#eb4c3f"
             theme_icon_color: "Custom"
             adaptive_size: True
-            size_hint: None, None
-            size: title_lbl.height, title_lbl.height
-            icon_size: sp(30)
+            icon_size: sp(25)
             pos_hint: {"center_y": .9, "x": .1}
             opacity: 1
             md_bg_color: (0, 0, 0, 0)
-            on_press: print("Closing the section")
+            on_press: root.parent.hide_riders_section(root)
 
     
     MDScrollView:
@@ -105,11 +102,11 @@
             spacing: dp(7)
 
             RiderListItem:
-            RiderListItem:
-            RiderListItem:
-            RiderListItem:
-            RiderListItem:
-            RiderListItem:
-            RiderListItem:
+            # RiderListItem:
+            # RiderListItem:
+            # RiderListItem:
+            # RiderListItem:
+            # RiderListItem:
+            # RiderListItem:
 
     MDWidget:
