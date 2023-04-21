@@ -96,6 +96,7 @@
             pos_hint: {"right": 1}
             md_bg_color: rgba(1, 1, 1, 0)
             opacity: 1
+            on_press: print("Menu clicked")
 
 
 #############################
@@ -103,7 +104,7 @@
 ############################
     RidersListSection:
         id: riders_section
-        y: root.height - self.height - dp(15)
+        y: root.height - self.height - dp(7)
         pos_hint: {"x": 1.01}
 
     MDBoxLayout:
@@ -154,7 +155,7 @@
                                 Color:
                                     rgba: (207/255,208/255,208/255, 1)
                                 Line:
-                                    points: (64, 116, 290, 116)
+                                    points: [self.x - dp(10), self.y - dp(9), self.x + self.width - dp(60), self.y - dp(9)]
                                     width: .5
 
                     MDFloatLayout:
