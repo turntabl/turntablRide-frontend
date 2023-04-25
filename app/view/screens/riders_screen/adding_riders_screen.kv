@@ -1,0 +1,180 @@
+#:include app/view/screens/riders_screen/added_riders_screen.kv
+
+########################
+## Custom Helper Widgets
+########################
+<CardLabel@MDLabel>:
+    font_name: "jakarta"
+    bold: True
+    adaptive_height: True
+
+<CustomActionButton@Button>:
+    font_name: "jakarta"
+    font_size: dp(17)
+    size_hint: None, None
+    size: dp(151), dp(40)
+    markup: True
+    background_color: (0, 0, 0, 0)
+    background_normal: ""
+    canvas.before:
+        Color:
+            rgba: [66/255,132/255,245/255,1]
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [10]
+
+<LocationDetailsIcon@MDIcon>:
+    theme_text_color: "Custom"
+    font_size: dp(16)
+
+<LocationDetailsLabel@CardLabel>:
+    pos_hint: {"x": .15, "center_y": .5}
+    font_name: "assets/fonts/PlusJakartaSans-Medium.ttf"
+    color: "#7d7c7d"
+
+
+################################
+#### Main Screen Contents
+################################
+<AddingRidersScreen>:
+    MapView:
+
+    MDFloatLayout:
+        size_hint: None, None
+        size: dp(75), dp(75)
+        x: dp(283)
+        y: dp(350)
+        radius: self.width / 2
+        line_color: app.COLORS.BlueColor["BackgroundColor"]
+        line_width: 1.2
+        md_bg_color: (1, 1, 1, .7)
+            
+        MDIconButton:
+            theme_icon_color: "Custom"
+            text_color: "#010001"
+            icon: "account"
+            icon_size: sp(35)
+            opacity: 1
+            md_bg_color: (0, 0, 0, 0)
+            pos_hint: {"center_x": 0.5, "center_y": 0.6}
+            on_press: root.open_riders_section(riders_section)
+        MDFlatButton:
+            text: "[b]4[/b]"
+            markup: True
+            font_name: "jakarta"
+            font_size: dp(20)
+            theme_text_color: "Custom"
+            text_color: app.COLORS.BordersColor["BlueBorder"]
+            padding: dp(15), dp(5)
+            adaptive_size: True
+            opacity: 1
+            radius: self.width / 2
+            pos_hint: {"x": .08, "top": .47}
+            on_press: root.open_riders_section(riders_section)
+###########################
+##### Navigation Section
+###########################
+    MDBoxLayout:
+        size_hint: 1, .1
+        padding: dp(10), dp(16), dp(10), 0
+        pos_hint: {"top": 1}
+        
+        MDIconButton:
+            id: prev_btn
+            icon: "arrow-left"
+            size_hint: None, None
+            icon_size: sp(30)
+            md_bg_color: (1, 1, 1, .6)
+            opacity: 1
+
+        MDWidget:
+
+        MDIconButton:
+            id: dropdown_btn
+            icon: "dots-vertical"
+            pos_hint: {"right": 1}
+            md_bg_color: rgba(1, 1, 1, 0)
+            opacity: 1
+            on_press: print("Menu clicked")
+
+
+#############################
+### Riders List
+############################
+    RidersListSection:
+        id: riders_section
+        y: root.height - self.height - dp(7)
+        pos_hint: {"x": 1.01}
+
+    MDBoxLayout:
+        size_hint: 1, None
+        height: dp(264)
+
+        MDCard:
+            height: self.parent.height
+            padding: dp(22), dp(5)
+            spacing: dp(7)
+            
+            CardLabel:
+                text: 
+                    "You are riding with 4 others.\n" \
+                    "They would be notified once you confirm."
+                color: "#808081"
+                halign: "center"
+
+            CardLabel:
+                text: root.driver_name
+                adaptive_size: True
+                font_size: dp(18)
+                pos_hint: {"x": .02}
+
+            MDBoxLayout:
+                line_color: app.COLORS.BlueColor["TextColor"]
+                line_width: 1.2
+                size_hint: None, None
+                size: dp(291), dp(81)
+                pos_hint: {"x": .02, "y": .1}
+                radius: dp(10)
+
+                MDBoxLayout:
+                    padding: dp(10)
+                    orientation: "vertical"
+                    spacing: dp(12)
+
+                    MDFloatLayout:
+                        spacing: dp(7)
+
+                        LocationDetailsIcon:
+                            icon: "radiobox-marked"
+                            text_color: "#0184ff"
+                            pos_hint: {"x": 0.02, "center_y": .5}
+                        LocationDetailsLabel:
+                            text: "Start Location"
+                            canvas:
+                                Color:
+                                    rgba: (207/255,208/255,208/255, 1)
+                                Line:
+                                    points: [self.x - dp(10), self.y - dp(9), self.x + self.width - dp(60), self.y - dp(9)]
+                                    width: .5
+
+                    MDFloatLayout:
+                        spacing: dp(7)
+
+                        LocationDetailsIcon:
+                            icon: "map-marker"
+                            text_color: app.COLORS.RedColor["TextColor"] 
+                            pos_hint: {"x": 0.02, "center_y": .5}
+                        LocationDetailsLabel:
+                            text: "End Location"
+
+            MDBoxLayout:
+                spacing: dp(30)
+                padding: dp(0), dp(5), dp(0), dp(15)
+                
+                CustomActionButton:
+                    text: "[b]Add User to Ride[/b]"
+
+                CustomActionButton:
+                    text: "[b]Done[/b]"
+
