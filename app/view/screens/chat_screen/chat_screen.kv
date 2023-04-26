@@ -30,15 +30,15 @@
             size_hint_x: 0.4
             spacing: dp(10)
 
-            # MDIconButton:
-            #     id: waiting_time_countdown_timer
-            #     icon: "account-clock"
-            #     pos_hint: {"center_y": 0.5, "right": 0.6}
-            #     opacity: 1
-            #     theme_text_color: "Custom" # Set color myself
-            #     text_color: 1, 1, 1, 1 # Set color to white
-            #     md_bg_color: rgba(0, 0, 0, 0) # Remove circular background
-            #     on_press: root.controller.start_ride()
+            MDIconButton:
+                id: waiting_time_countdown_timer
+                icon: "account-clock"
+                pos_hint: {"center_y": 0.5, "right": 0.6}
+                opacity: 1
+                theme_text_color: "Custom" # Set color myself
+                text_color: 1, 1, 1, 1 # Set color to white
+                md_bg_color: rgba(0, 0, 0, 0) # Remove circular background
+                on_press: root.controller.start_ride()
 
             Button:
                 id: ride_details
