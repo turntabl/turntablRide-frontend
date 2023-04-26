@@ -3,9 +3,9 @@ from app.model.login_auth_model.login_auth import Authentication
 from app.utils.credentials import save_credentials
 
 
-class LoginAuthenticationController:
+class LoginController:
     """
-    The `LoginAuthenticationController` class represents a controller implementation.
+    The `LoginController` class represents a controller implementation.
     Coordinates work of the view with the model.
     The controller implements the strategy pattern. The controller connects to
     the view to control its actions.
