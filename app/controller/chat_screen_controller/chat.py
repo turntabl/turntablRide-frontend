@@ -21,13 +21,13 @@ class ChatScreenController(object):
     def get_ride_chat_name(self, driver):
         return f"{driver.first_name} Ride Chat"
         
-    def start_or_end_ride(self, ride):
-        if ride.start == False:
-            ride.start = True
-            return "Ride Started"
-        else:
-            ride.start = False
-            return "Ride Ended"   
+    # def start_or_end_ride(self, ride):
+    #     if ride.start == False:
+    #         ride.start = True
+    #         return "Ride Started"
+    #     else:
+    #         ride.start = False
+    #         return "Ride Ended"   
         
     
     def get_ride_details(self, ride):
