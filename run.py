@@ -11,7 +11,7 @@ class WindowManager(MDScreenManager):
     Actual implementation is found in the ` run.kv ` file
 
     :param MDScreenManager: Screen manager. This is the main class that will control your ~kivymd.uix.screen.MDScreen stack and memory  
-    :type MDScreenManager: ~kivymd.uix.screenmanager.MDScreenManager
+    :type MDScreenManager: ~kivymd.uix.screenmanager.MDScreenManager   
     """
     pass
 

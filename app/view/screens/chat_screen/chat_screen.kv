@@ -1,87 +1,105 @@
 <ChatScreen>:
     orientation: "vertical"
 
-    # Add navbar
+    # Navbar
     MDBoxLayout:
-        size_hint: 1.95, 0.05
+        size_hint: 1, 0.05
         pos_hint: {"top":1}
-             
-        canvas.before:
-            Color: 
-                rgba: 0.23, 0.51, 0.965, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        md_bg_color: 0.23, 0.51, 0.965, 1
 
-        MDIconButton:
-            pos_hint: {"top": 1.2, "right": 0.15}
-            id: back_btn
-            icon: "arrow-left"
-            theme_text_color: "Custom" # Set color myself
-            text_color: 1, 1, 1, 1 # Set color to white
-            md_bg_color: rgba(0, 0, 0, 0) # Remove circular background
-            on_press : root.send_message()
+        MDBoxLayout:
+            # line_color: "blue"
+            MDIconButton:
+                id: back_btn
+                pos_hint: {"top": 1.25, "left": 0.99}
+                icon: "arrow-left"
+                opacity: 1
+                md_bg_color: rgba(0, 0, 0, 0) # Remove circular background
+                theme_text_color: "Custom" # Set color myself
+                text_color: 1, 1, 1, 1 # Set color to white
+                on_press : root.send_message()
 
-        MDLabel:
-            id: Rider_label
-            text: "Yoofi's Ride Chat"
-            font_size: 18
-            bold: True
-            size_hint_y: 1
-            color: [1,1,1,1]
-            pos_hint: {"center_y": 0.5, "x": 0.25}
+            MDLabel:
+                id: Rider_label
+                text: "Maxwell Ride Chat" #root.controller.get_ride_chat_name()
+                font_size: dp(19)
+                font_name: "jakarta"
+                bold: True
+                color: [1,1,1,1]
+        MDBoxLayout:
+            size_hint_x: 0.4
+            spacing: dp(10)
 
-        Button:
-            id: ride_details
-            text: ""
-            size_hint: 0.25, 0.1875
-            pos_hint:{"top": 0.5}
-            background_color: 0,0,0,0
-            on_press: root.send_message()
+            # MDIconButton:
+            #     id: waiting_time_countdown_timer
+            #     icon: "account-clock"
+            #     pos_hint: {"center_y": 0.5, "right": 0.6}
+            #     opacity: 1
+            #     theme_text_color: "Custom" # Set color myself
+            #     text_color: 1, 1, 1, 1 # Set color to white
+            #     md_bg_color: rgba(0, 0, 0, 0) # Remove circular background
+            #     on_press: root.controller.start_ride()
 
-            Image:
-                source: 'assets/images/Vector.png'
+            Button:
+                id: ride_details
+                text: ""
                 size_hint: 0.25, 0.1875
-                center_y: self.parent.center_y
+                pos_hint:{"top": 0.5, "right": 0.9}
+                background_color: 0,0,0,0
+                on_press: root.controller.get_ride_details()
+
+                Image:
+                    source: 'assets/images/Vector.png'
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+
+            MDIconButton:
+                id: menu_btn
+                icon: "dots-vertical"
+                pos_hint: {"center_y": 0.5, "right": 0.99}
+                opacity: 1
+                theme_text_color: "Custom" # Set color myself
+                text_color: 1, 1, 1, 1 # Set color to white
+                md_bg_color: rgba(0, 0, 0, 0) # Remove circular background
+                on_press : root.send_message()
 
 
-        MDIconButton:
-            id: menu_btn
-            icon: "dots-vertical"
-            pos_hint: {"top": 1.2, "right": 0.15}
-
-
-    # Add a ScrollView widget to allow scrolling
+    # ScrollView widget to allow scrolling
     ScrollView:
         size_hint_y: 0.8
 
-        # Add a Label widget to display the chat messages
+        # Label widget to display the chat messages
         Label:
             id: chat_label
             text: ""
             font_size: 14
             markup: True
 
-    # Add a horizontal BoxLayout to hold the message input field and the send button
+    # BoxLayout to hold the message input field and the send button
     MDBoxLayout:
         orientation: "horizontal"
         size_hint_y: 0.20
         padding: 18
 
-        # Add the TextInput widget for users to enter new messages
+        # TextInput widget for users to enter new messages
         TextInput:
-            id: message_input
+            id: message_input          
             hint_text: "Send message to group"
+            padding: [dp(20), dp(10)]
+            font_name: "jakarta"
+            font_size: dp(12)
             size_hint:2.62, 0.4
-            # radius: [10, 10, 10, 10]
+            pos_hint: {"top": 0.425}
+            background_normal: "assets/images/text_box.png"
+            background_active: "assets/images/text_box.png"
 
-        # Add the Send button
+        # Send button
         Button:
             id: send_button
             text: ""
             size_hint: 0.37, 0.37
             background_color: 0,0,0,0
-            on_press: root.send_message()
+            on_press: root.controller.send_message()
 
             Image:
                 source: 'assets/images/send.png'
