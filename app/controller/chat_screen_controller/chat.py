@@ -1,4 +1,5 @@
 from kivymd.app import MDApp
+from kivy.clock import Clock
 
 class ChatScreenController(object):
     """Handles all logic related to the chat screen
