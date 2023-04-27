@@ -8,7 +8,7 @@
         md_bg_color: 0.23, 0.51, 0.965, 1
 
         MDBoxLayout:
-            # line_color: "blue"
+            spacing: dp(0)
             MDIconButton:
                 id: back_btn
                 pos_hint: {"top": 1.25, "left": 0.99}
@@ -17,7 +17,7 @@
                 md_bg_color: rgba(0, 0, 0, 0) # Remove circular background
                 theme_text_color: "Custom" # Set color myself
                 text_color: 1, 1, 1, 1 # Set color to white
-                on_press : root.send_message()
+                on_press : root.controller.go_back()
 
             MDLabel:
                 id: Rider_label
