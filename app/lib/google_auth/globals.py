@@ -3,11 +3,9 @@ This module contains global variables to be used within the package.
 These varibales may or may not be constants.
 """
 
-
-stop_thread = False
-CALLBACK_URL = "https://127.0.0.1:9004/"
-
-
+PORT = 9004
+HOST = "localhost"
+CALLBACK_URL = f"http://127.0.0.1:{PORT}/"
 google_endpoints = {
     "AUTHORIZATION_ENDPOINT": "https://accounts.google.com/o/oauth2/v2/auth",
     "TOKEN_ENDPOINT": "https://oauth2.googleapis.com/token",

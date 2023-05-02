@@ -1,14 +1,7 @@
-import threading
-from kivy.clock import Clock
-
-from app.view.commons.toast.toast import Toaster
-from app.utils.colors import Colors
-from app.view.commons.loader.loader import Loader
-import config.config as config
-from kivymd.app import MDApp
+import requests
+import multitasking
+from config.config import CLIENT_SECRET, CLIENT_ID, BACKEND_SERVER
 from app.lib.google_auth import GoogleOAuth
-
-
 
 
 class Authentication:
@@ -20,73 +13,54 @@ class Authentication:
     This class only works with Desktop applications
     """
 
-    def __init__(self):
-        self.google_login = GoogleOAuth(
-            config.CLIENT_ID,
-            config.CLIENT_SECRET,
-            self.after_login,
-            self.error_listener,
-        )
-        self.login_thread = threading.Thread(target=self.google_login.login)
-        self.login_thread.daemon = True
-        self.loading = Loader(self.google_login.stop_tok_server)
+    observers = []
 
-    def login(self) -> None:
+    def __init__(self):
+        self.google_auth = GoogleOAuth(CLIENT_ID, CLIENT_SECRET)
+
+    @property
+    def credentials(self):
+        return self._credentials
+
+    @credentials.setter
+    def credentials(self, value):
+        self._credentials = None if value == "error" else value
+        if value == "error":
+            self.notify_error("No internet connection")
+        else:
+            self.notify_success(value)
+
+    @multitasking.task
+    def login_user(self):
         """Method to call to start the login process."""
-        self.loading.open()
-        self.login_thread.start()
-    
-    def after_login(self, token):
+        self.credentials = self.google_auth.login()
+
+    def fetch_data(self, token):
         """
-        Is called after the login process is successful.
+        Function called to get some data from the backend server
 
         Parameters
         ----------
         token : str
             used to access resources on the backend not google resources
         """
-        import requests
 
         header = {"Authorization": "Bearer " + token}
 
         try:
-            resp = requests.get(config.BACKEND_SERVER + "/api/v1/demo", headers=header)
-            root = MDApp.get_running_app().root
+            resp = requests.get(BACKEND_SERVER + "/api/v1/demo", headers=header)
             status_code = resp.status_code
             if status_code == 200:
-                Clock.schedule_once(lambda *args: (change_screen(root, resp),), 0)
+                return (status_code, resp.text)
             elif status_code == 401:
-                Clock.schedule_once(
-                    lambda *args: (
-                        Toaster(message="You don't have access to this screen", bg_color=Colors().ErrorColor.get("BackgroundColor"),
-                    font_size=14).toast(),
-                    ),
-                    0,
-                )
-            Clock.schedule_once(lambda *args: (self.loading.dismiss(),), 0)
+                return (status_code, "You don't have access to this screen")
         except requests.exceptions.RequestException:
-            self.error_listener("Backend server is down")
+            return (0, "Backend server is down")
 
+    def notify_error(self, msg):
+        for observer in self.observers:
+            observer.on_error(msg)
 
-
-   
-    def error_listener(self, msg):
-        """Called whenever there is an error in the login process"""
-
-        Clock.schedule_once(
-            lambda *args: (
-                self.loading.dismiss(),
-                Toaster(message=msg, bg_color=Colors().ErrorColor.get("BackgroundColor"),
-                    font_size=14).toast(),
-            ),
-            0,
-        )
-
-
-    def login_and_register_user(self):
-        """Custom login response to hold user return responses"""
-        return Authentication().login()
-    
-def change_screen(root, resp):
-    root.current = "dashboard"
-    root.get_screen("dashboard").ids.dashboard.ids.welcome_text.text = resp.text
+    def notify_success(self, data):
+        for observer in self.observers:
+            observer.on_success(data)

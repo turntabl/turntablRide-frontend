@@ -1,12 +1,10 @@
-import socket
 import webbrowser
-import threading
-# from google_auth.server import oauth_server, run_server
-from app.lib.google_auth import globals as glob
+import requests
+import urllib.parse
+from app.lib.google_auth.server import get_oauth_server
+from app.lib.google_auth.globals import CALLBACK_URL, google_endpoints
+from app.lib.google_auth.utils import is_connected
 from oauthlib.oauth2 import WebApplicationClient
-
-from app.lib.google_auth.server import oauth_server, run_server
-
 
 
 class GoogleOAuth:
@@ -14,12 +12,10 @@ class GoogleOAuth:
     Provide Google OAuth2 to kivy apps.
     Notes
     -----
-    Currently working for only web applications that require OAuth using Google.
+    Currently working for only desktop applications that require OAuth using Google.
     """
 
-    def __init__(
-        self, client_id, client_secret, success_listener, error_listener, **kwargs
-    ):
+    def __init__(self, client_id, client_secret, **kwargs):
         """
         Creates an object of GoogleOAuth with parameters provided.
         Parameters
@@ -33,48 +29,36 @@ class GoogleOAuth:
         success_listener : func
             A function to be called the user is authenticated. Function should
             accept one parameter which is the token received.
+        error_listener : func
+            A function that is called when there is an error during the login process.
+            Must accept one argument
+        kwargs : dict
+            Key values parameters passed to WebApplicationClient
         """
-        self.succ_listener = success_listener
-        self.err_listener = error_listener
         self.client_id = client_id
-        self.__client_secret = client_secret
-        self.oauth_endpoints = glob.google_endpoints
+        self._client_secret = client_secret
         self.web_client = WebApplicationClient(client_id, **kwargs)
+        self._consent_page = self._prepare_consent_page()
 
     def login(self):
         """
         Function to initiate the login process. Redirects user to consent page
         for authentication.
-        Return
-        ------
-        True if consent page was being able to open for user
-        False if there was no internet connection.
         """
-        if self.is_connected():
-            consent_page = self.__prepare_consent_page()
-            self.__token_server = oauth_server(self, self.__client_secret)
-            t = threading.Thread(target=run_server, args=(self.__token_server,))
-            t.daemon = True
-            t.start()
-            webbrowser.open(consent_page, 1, False)
+        if is_connected():
+            return self._start_login()
         else:
-            self.err_listener("No internet Connection")
+            res = "error"
+        return res
 
-    def stop_tok_server(self):
-        """
-        Function to stop the token server.
-        """
-        glob.stop_thread = True
-        self.__token_server.shutdown()
+    def _start_login(self):
+        token_server = get_oauth_server(self, self._client_secret)
+        webbrowser.open(self._consent_page, 1, False)
+        token_server.handle_request()
+        token_server.server_close()
+        return self.web_client.token
 
-    def is_connected(self):
-        try:
-            socket.create_connection(("www.google.com", 80))
-            return True
-        except OSError:
-            return False
-
-    def __prepare_consent_page(self):
+    def _prepare_consent_page(self):
         """
         Prepares the consent page for the user. This page is what the
         user is redirected to for authentication from google.
@@ -83,10 +67,28 @@ class GoogleOAuth:
         consent_page : str
             A Url in a string format
         """
-        auth_endpoint = self.oauth_endpoints["AUTHORIZATION_ENDPOINT"]
         consent_page = self.web_client.prepare_request_uri(
-            auth_endpoint,
-            redirect_uri=glob.CALLBACK_URL,
+            google_endpoints["AUTHORIZATION_ENDPOINT"],
+            redirect_uri=CALLBACK_URL,
             scope=["email", "profile"],
+            access_type="offline",
         )
         return consent_page
+
+
+def refresh(refresh_token, client_id, client_secret):
+    url = google_endpoints["TOKEN_ENDPOINT"]
+    header = {"content-type": "application/x-www-form-urlencoded"}
+    body = urllib.parse.urlencode(
+        {
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token,
+        }
+    ).encode("utf-8")
+    try:
+        res = requests.post(
+            url, headers=header, data=body, auth=(client_id, client_secret)
+        )
+        return res.json()
+    except requests.exceptions.ConnectionError:
+        return None
